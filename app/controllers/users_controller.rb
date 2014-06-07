@@ -7,12 +7,36 @@ class UsersController < ApplicationController
     :headers => { 'Content-Type' => 'application/json' } )
     if @result['success']
       flash[:success] = "Welcome to Reveal!"
-      session[:id]=@result['session_id']
+      session[:auth_token]=@result['auth_token']
       session[:user_id]=@result['id']
       session[:username]=@result['username']
       redirect_to root_path
     else
+      flash[:error] = "Invalid registration"
       redirect_to root_path
     end
+  end
+
+  def login
+    @result = HTTParty.post("http://localhost:3000/users/login", 
+    :body => { :user => {:username => params[:username], 
+                :password => params[:password]}
+             }.to_json,
+    :headers => { 'Content-Type' => 'application/json' } )
+    if @result['success']
+      flash[:success] = "Welcome to Reveal!"
+      session[:auth_token]=@result['auth_token']
+      session[:user_id]=@result['id']
+      session[:username]=@result['username']
+      redirect_to root_path
+    else
+      flash[:error] = "Invalid username/password"
+      redirect_to root_path
+    end
+  end
+
+  def logout
+    session.clear
+    redirect_to root_path
   end
 end

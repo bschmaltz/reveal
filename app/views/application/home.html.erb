@@ -1,9 +1,9 @@
 <div id="content" data-role="content">
-Welcome to Reveal! session[:id]=<%= session[:id] %>
+Welcome to Reveal! session[:auth_token]=<%= session[:auth_token] %>
 </div>
-<% if session[:id].nil? %>
+<% if session[:auth_token].nil? %>
   <div id="sign-in">
-    <%= form_tag("/sessions", method: "post") do %>
+    <%= form_tag("/users/login", method: "post") do %>
       <%= label_tag(:username, "username") %>
       <%= text_field_tag(:username) %>
       <%= label_tag(:password, "password") %>

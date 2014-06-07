@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root to: 'application#home'
-  resources :users
-  resources :sessions
 
-  get '/logout', to: 'sessions#destroy', as: :logout
+  post '/users', to: 'users#create'
+  post '/users/login', to: 'users#login'
+  get '/users/logout', to: 'users#logout', as: :logout
 end
