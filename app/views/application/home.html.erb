@@ -1,0 +1,25 @@
+<div id="content" data-role="content">
+Welcome to Reveal! session[:id]=<%= session[:id] %>
+</div>
+<% if session[:id].nil? %>
+  <div id="sign-in">
+    <%= form_tag("/sessions", method: "post") do %>
+      <%= label_tag(:username, "username") %>
+      <%= text_field_tag(:username) %>
+      <%= label_tag(:password, "password") %>
+      <%= text_field_tag(:password) %>
+      <%= submit_tag("Sign In") %>
+    <%end%>
+  </div>
+  <div id="sign-up">
+    <%= form_tag("/users", method: "post") do %>
+      <%= label_tag(:username, "username") %>
+      <%= text_field_tag(:username) %>
+      <%= label_tag(:password, "password") %>
+      <%= text_field_tag(:password) %>
+      <%= submit_tag("Sign Up") %>
+    <%end%>
+  </div>
+<% else %>
+  <%= link_to "Logout", :logout %>
+<% end %>
