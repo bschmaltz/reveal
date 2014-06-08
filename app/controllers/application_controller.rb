@@ -4,5 +4,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def home
+    if !session[:auth_token].nil?
+      redirect_to '/posts'
+    end
   end
 end

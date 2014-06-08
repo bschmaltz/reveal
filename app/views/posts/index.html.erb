@@ -1,0 +1,8 @@
+<ul class="users">
+  <% @posts.each do |post| %>
+    <li>
+      <div>user: <%= post['username'] %></div>
+      <div>says: <%= post['content'] %></div>
+    </li>
+  <% end %>
+</ul>

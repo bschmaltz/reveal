@@ -1,0 +1,8 @@
+<%if session[:username]==@post['username']%>
+  <%= link_to 'delete', "@posts/delete/#{@post['id']}" %>
+  <% if !@post['revealed']%>
+    <%= link_to 'reveal', "@posts/reveal/#{@post['id']}" %>
+  <% end %>
+<% end %>
+<div>user: <%= @post['username'] %></div>
+<div>says: <%= @post['content'] %></div>

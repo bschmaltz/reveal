@@ -1,25 +1,27 @@
-<div id="content" data-role="content">
-Welcome to Reveal! session[:auth_token]=<%= session[:auth_token] %>
-</div>
-<% if session[:auth_token].nil? %>
+<% if authenticated? %>
+  Reveal Home
+<% else %>
+  Login
   <div id="sign-in">
     <%= form_tag("/users/login", method: "post") do %>
       <%= label_tag(:username, "username") %>
       <%= text_field_tag(:username) %>
       <%= label_tag(:password, "password") %>
-      <%= text_field_tag(:password) %>
+      <%= password_field_tag(:password) %>
       <%= submit_tag("Sign In") %>
     <%end%>
   </div>
+  <br />
+  New user?
   <div id="sign-up">
     <%= form_tag("/users", method: "post") do %>
       <%= label_tag(:username, "username") %>
       <%= text_field_tag(:username) %>
       <%= label_tag(:password, "password") %>
-      <%= text_field_tag(:password) %>
+      <%= password_field_tag(:password) %>
+      <%= label_tag(:confirm_password, "confirm password") %>
+      <%= password_field_tag(:confirm_password) %>
       <%= submit_tag("Sign Up") %>
     <%end%>
   </div>
-<% else %>
-  <%= link_to "Logout", :logout %>
 <% end %>

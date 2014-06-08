@@ -1,3 +1,7 @@
 <div data-role="header" data-position="inline">
 	<h1>Reveal</h1>
 </div>
+<% if authenticated? %>
+  <%= link_to "Logout", :logout %>
+  <%= link_to "Create Post", :new_post %>
+<% end %>

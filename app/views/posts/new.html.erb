@@ -1,0 +1,7 @@
+new post maker 2.0
+<br />
+<%= form_tag("/posts", method: "post") do %>
+  <%= label_tag(:content, "Write something...") %>
+  <%= text_area_tag(:content) %>
+  <%= submit_tag("Post!") %>
+<%end%>
