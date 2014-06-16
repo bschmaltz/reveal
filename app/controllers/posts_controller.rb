@@ -1,37 +1,38 @@
 class PostsController < ApplicationController
+  before_filter :authorize, :only => [:new, :create]
   def new
   end
 
   def create
-    @result = HTTParty.post("http://localhost:3000/posts", 
-      :body => { :post => {:username => session[:username], 
+    result = HTTParty.post("#{api_url}/posts", 
+      :body => { :post => {:user_id => current_user['id'], 
                   :content => params[:content],
                   :revealed => false}
                }.to_json,
       :headers => { 'Content-Type' => 'application/json',
-        'Authorization' => "Token token=#{session[:auth_token]}" } )
-    redirect_to action: 'index'
+        'Authorization' => "Token token=#{current_user['auth_token']}" } )
+    if result['success']
+      flash[:success] = "Post created!"
+      redirect_to action: 'index'
+    else
+      flash[:error] = "Error creating post. Try again."
+      redirect_to action: 'new'
+    end
   end
 
   def index
-    @posts = HTTParty.get("http://localhost:3000/posts")
+    if authenticated?
+      @posts = HTTParty.get("#{api_url}/posts/index")
+    else
+      @posts = HTTParty.get("#{api_url}/posts/index")
+    end
   end
 
   def show
-    @post = HTTParty.get("http://localhost:3000/posts/#{params[:id]}")
-  end
-
-  def reveal
-    @result = HTTParty.put("http://localhost:3000/posts/reveal/#{params[:id]}", 
-      :headers => { 'Content-Type' => 'application/json',
-        'Authorization' => "Token token=#{session[:auth_token]}" })
-    redirect_to action: 'index'
-  end
-
-  def destroy
-    @result = HTTParty.delete("http://localhost:3000/posts/#{params[:id]}", 
-      :headers => { 'Content-Type' => 'application/json',
-        'Authorization' => "Token token=#{session[:auth_token]}" })
-    redirect_to action: 'index'
+    if authenticated?
+      @post = HTTParty.get("#{api_url}/posts/#{params[:id]}")
+    else
+      @post = HTTParty.get("#{api_url}/posts/#{params[:id]}")
+    end
   end
 end

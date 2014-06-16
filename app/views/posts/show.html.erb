@@ -1,8 +1,14 @@
-<%if session[:username]==@post['username']%>
+<%if @post['current_user_is_poster'] %>
   <%= link_to 'delete', "@posts/delete/#{@post['id']}" %>
   <% if !@post['revealed']%>
     <%= link_to 'reveal', "@posts/reveal/#{@post['id']}" %>
   <% end %>
 <% end %>
-<div>user: <%= @post['username'] %></div>
-<div>says: <%= @post['content'] %></div>
+<div id="<%=@post['id']%>">
+  <div>user: <%= @post['username'] %></div>
+  <div>says: <%= @post['content'] %></div>
+  <div>votes: <%= post['vote_stat'] %></div>
+  <div>shares: <%= post['share_stat'] %></div>
+  <div>your vote: <%= post['current_user_vote'] %></div>
+  <div>did you share: <%= post['current_user_shared'] %></div>
+</div>

@@ -1,8 +1,16 @@
 <ul class="users">
   <% @posts.each do |post| %>
-    <li>
+    <li id="<%= post['id'] %>">
+      <%if post['current_user_is_poster'] %>
+        <%= link_to 'delete' %>
+        <% if !post['revealed']%>
+          <%= link_to 'reveal' %>
+        <% end %>
+      <% end %>
       <div>user: <%= post['username'] %></div>
       <div>says: <%= post['content'] %></div>
+      <div>votes: <%= post['vote_stat'] %></div>
+      <div>shares: <%= post['share_stat'] %></div>
     </li>
   <% end %>
 </ul>

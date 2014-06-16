@@ -1,6 +1,3 @@
-<% if authenticated? %>
-  Reveal Home
-<% else %>
   Login
   <div id="sign-in">
     <%= form_tag("/users/login", method: "post") do %>
@@ -24,4 +21,3 @@
       <%= submit_tag("Sign Up") %>
     <%end%>
   </div>
-<% end %>

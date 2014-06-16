@@ -4,16 +4,14 @@ class UsersController < ApplicationController
       flash[:error] = "Passwords must match"
       redirect_to root_path
     else
-      @result = HTTParty.post("http://localhost:3000/users", 
+      result = HTTParty.post("#{api_url}/users", 
       :body => { :user => {:username => params[:username], 
                   :password => params[:password]}
                }.to_json,
       :headers => { 'Content-Type' => 'application/json' } )
-      if @result['success']
+      if result['success']
         flash[:success] = "Welcome to Reveal!"
-        session[:auth_token]=@result['auth_token']
-        session[:user_id]=@result['id']
-        session[:username]=@result['username']
+        set_current_user(result)
         redirect_to root_path
       else
         flash[:error] = "Invalid registration"
@@ -23,20 +21,28 @@ class UsersController < ApplicationController
   end
 
   def login
-    @result = HTTParty.post("http://localhost:3000/users/login", 
+    result = HTTParty.post("#{api_url}/users/login", 
     :body => { :user => {:username => params[:username], 
                 :password => params[:password]}
              }.to_json,
     :headers => { 'Content-Type' => 'application/json' } )
-    if @result['success']
+    if result['success']
       flash[:success] = "Welcome to Reveal!"
-      session[:auth_token]=@result['auth_token']
-      session[:user_id]=@result['id']
-      session[:username]=@result['username']
+      set_current_user(result)
       redirect_to root_path
     else
       flash[:error] = "Invalid username/password"
       redirect_to root_path
+    end
+  end
+
+  def show
+    @user =  HTTParty.get("#{api_url}/users/#{params[:id]}")
+    if authenticated?
+      @user_posts = HTTParty.get("#{api_url}/posts/index_for_user/#{params[:id]}",
+        :headers => { 'Authorization' => "Token token=#{current_user['auth_token']}" })
+    else
+      @user_posts = HTTParty.get("#{api_url}/posts/index_for_user/#{params[:id]}")
     end
   end
 

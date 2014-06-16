@@ -10,6 +10,10 @@ module ApplicationHelper
   end
 
   def authenticated?
-    !session[:auth_token].nil?
+    !session[:user].nil?
+  end
+
+  def current_user
+    session[:user]
   end
 end
