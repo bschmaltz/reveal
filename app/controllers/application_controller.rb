@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   end
 
   def api_url
-    "http://localhost:3000"
+    "http://reveal-api.herokuapp.com"
   end
 
   def authorize
