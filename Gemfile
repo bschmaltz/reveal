@@ -37,4 +37,6 @@ gem 'spring',        group: :development
 # gem 'debugger', group: [:development, :test]
 
 gem 'httparty'
+gem 'rails_12factor', group: :production
 
+ruby "2.1.2"
