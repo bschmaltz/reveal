@@ -5,11 +5,7 @@
     <h2>Hidden Posts</h2>
     <% @user_posts.each do |post| %>
       <% if !post['revealed'] %>
-        <div class="hidden-post">
-          <%= post['username'] %>:
-          <br />
-          <%= post['content'] %>
-        </div>
+        <%= render 'posts/post', :post => post %>
       <% end %>
     <% end %>
   </div>
@@ -20,11 +16,7 @@
   <h2>Public Posts</h2>
   <% @user_posts.each do |post| %>
     <% if post['revealed'] %>
-      <div class="reavealed-post">
-        <%= post['username'] %>:
-        <br />
-        <%= post['content'] %>
-      </div>
+      <%= render 'posts/post', :post => post %>
     <% end %>
   <% end %>
 </div>

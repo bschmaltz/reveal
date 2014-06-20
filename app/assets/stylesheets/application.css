@@ -19,3 +19,13 @@
 .alert-error{
   color: red;
 }
+
+.post_current_user_is_poster{
+  display: none; 
+}
+.post_current_user_vote{
+  display: none; 
+}
+.post_current_user_shared{
+  display: none; 
+}

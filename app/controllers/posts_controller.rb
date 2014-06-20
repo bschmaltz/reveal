@@ -22,7 +22,8 @@ class PostsController < ApplicationController
 
   def index
     if authenticated?
-      @posts = HTTParty.get("#{api_url}/posts/index")
+      @posts = HTTParty.get("#{api_url}/posts/index", 
+        :headers => { 'Authorization' => "Token token=#{current_user['auth_token']}" })
     else
       @posts = HTTParty.get("#{api_url}/posts/index")
     end
@@ -30,7 +31,8 @@ class PostsController < ApplicationController
 
   def show
     if authenticated?
-      @post = HTTParty.get("#{api_url}/posts/#{params[:id]}")
+      @post = HTTParty.get("#{api_url}/posts/#{params[:id]}", 
+        :headers => { 'Authorization' => "Token token=#{current_user['auth_token']}" })
     else
       @post = HTTParty.get("#{api_url}/posts/#{params[:id]}")
     end
