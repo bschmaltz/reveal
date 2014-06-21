@@ -3,20 +3,24 @@
 <%if @user['id']==current_user['id'] %>
   <div id="hidden-posts">
     <h2>Hidden Posts</h2>
-    <% @user_posts.each do |post| %>
-      <% if !post['revealed'] %>
-        <%= render 'posts/post', :post => post %>
+    <ul class="user-hidden-posts">
+      <% @user_posts.each do |post| %>
+        <% if !post['revealed'] %>
+          <%= render 'posts/post', :post => post %>
+        <% end %>
       <% end %>
-    <% end %>
+    </ul>
   </div>
   <br />
   <br />
 <% end %>
 <div id="revealed-posts">
   <h2>Public Posts</h2>
-  <% @user_posts.each do |post| %>
-    <% if post['revealed'] %>
-      <%= render 'posts/post', :post => post %>
+  <ul class="user-revealed-posts">
+    <% @user_posts.each do |post| %>
+      <% if post['revealed'] %>
+        <%= render 'posts/post', :post => post %>
+      <% end %>
     <% end %>
-  <% end %>
+  </ul>
 </div>

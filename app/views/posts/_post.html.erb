@@ -1,0 +1,34 @@
+<li id="<%= post['id'] %>">
+  <%if post['current_user_is_poster'] %>
+    <%= link_to 'delete', "", class: "delete_post", :data => { :id => post['id'] }%>
+    <% if post['revealed']%>
+      <%= link_to 'hide', "", class: "hide_post", :data => { :id => post['id'] }%>
+    <% else %>
+      <%= link_to 'reveal', "", class: "reveal_post", :data => { :id => post['id'] }%>
+    <% end %>
+  <% end %>
+  <div class="post_vote">
+    <% if post['current_user_vote']=='up' %>
+      <div class="post_vote_up"><b>+</b></div>
+      <div class="post_vote_down">-</div>
+    <% elsif post['current_user_vote']=='down' %>
+      <div class="post_vote_up">+</div>
+      <div class="post_vote_down"><b>-</b></div>
+    <% else %>
+      <div class="post_vote_up">+</div>
+      <div class="post_vote_down">-</div>
+    <% end %>
+  </div>
+  <div class="post_username">user: <%= post['username'] %>
+    <% if post['current_user_is_poster'] and !post['revealed'] %>
+       (Me)
+    <% end %>
+  </div>
+  <div class="post_current_user_is_poster hidden"><%= post['current_user_is_poster'] %></div>
+  <div class="post_current_user_vote hidden"><%= post['current_user_vote'] %></div>
+
+  <div class="post_current_user_shared hidden"><%= post['current_user_shared'] %></div>
+  <div class="post_content">says: <%= post['content'] %></div>
+  <div class="post_vote_stat">votes: <%= post['vote_stat'] %></div>
+  <div class="post_share_stat">shares: <%= post['share_stat'] %></div>
+</li>
