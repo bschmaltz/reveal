@@ -16,7 +16,7 @@ reveal_post = (link)->
   link.unbind()
   id = link.data().id
   auth_token = $("#auth_user_info").data().token
-  $.ajax "http://reveal-api.heroku.com/posts/reveal/#{id}",
+  $.ajax "http://localhost:3001/posts/reveal/#{id}",
       type: 'PUT'
       contentType: 'application/json'
       beforeSend: (request) ->
