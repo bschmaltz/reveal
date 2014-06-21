@@ -1,4 +1,16 @@
 $ ->
+  rebind_posts()
+
+  $(document).scroll ->
+    load_posts()
+
+rebind_posts = ->
+  $('.reveal_post').unbind()
+  $('.hide_post').unbind()
+  $('.delete_post').unbind()
+  $('.post_vote_up').unbind()
+  $('.post_vote_down').unbind()
+
   $('.reveal_post').on click: (e)->
     e.preventDefault()
     reveal_post($(this))
@@ -18,6 +30,65 @@ $ ->
   $('.post_vote_down').on click: (e)->
     e.preventDefault()
     post_vote_down($(this))
+
+load_posts = ->
+  last_post = $('.post').last()
+  if element_in_scroll(last_post)
+    $(document).unbind('scroll')
+    id = last_post.attr('id')
+    auth_token = $("#auth_user_info").data().token
+    user_id = $("#auth_user_info").data().id
+    $.ajax "http://reveal-api.herokuapp.com/posts/index/#{id}",
+      type: 'GET'
+      contentType: 'application/json'
+      beforeSend: (request) ->
+        $('.ajax_loader').show()
+        request.setRequestHeader("Authorization", "Token token=#{auth_token}")
+      error: ->
+        $('.ajax_loader').hide()
+        alert('posts failed to load')
+      success: (data) ->
+        alert(data)
+        $('.ajax_loader').hide()
+        if data.length == 0
+          last_post.parent().after('<div id="end_of_posts">You\'ve reached the end of the feed</div>')
+        else
+          for post in data
+            username = if (!post.revealed and post.current_user_is_poster) then "Anonymous (Me)" else post.username
+            post_vote = ""
+            reveal_link = ""
+            delete_link = ""
+            post_data="data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\""
+            if post.current_user_is_poster
+              if post.revealed
+                reveal_link = "<a href=\"\" data-id=\"#{post.id}\" class=\"reveal_post\">reveal</a>"
+              else
+                reveal_link = "<a href=\"\" data-id=\"#{post.id}\" class=\"hide_post\">hide</a>"
+              delete_link = "<a href=\"\" data-id=\"#{post.id}\" class=\"delete_post\">delete</a>"
+              post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\"><div class=\"post_vote_up bold\">+</div><div class=\"post_vote_down\">-</div></div>"
+            else
+              if post.current_user_vote == 'up'
+                post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\"><div class=\"post_vote_up bold\">+</div><div class=\"post_vote_down\">-</div></div>"
+              else if post.current_user_vote == 'down'
+                post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\"><div class=\"post_vote_up\">+</div><div class=\"post_vote_down bold\">-</div></div>"
+              else
+                post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\"><div class=\"post_vote_up\">+</div><div class=\"post_vote_down\">-</div></div>"
+
+            $('.post').last().after("<li id=\"#{post.id}\" #{post_data} class=\"post\">#{reveal_link} #{delete_link}#{post_vote}<div class=\"post_username\">user: #{username}</div><div class=\"post_content\">says: #{post.content}</div><div class=\"post_vote_stat\">votes: #{post.vote_stat}</div><div class=\"post_share_stat\">shares: #{post.share_stat}</div></li>")
+          rebind_posts()
+          $(document).scroll ->
+            load_posts()
+
+
+element_in_scroll = (elem)->
+  docViewTop = $(window).scrollTop();
+  docViewBottom = docViewTop + $(window).height()
+
+  elemTop = elem.offset().top
+  elemBottom = elemTop + elem.height()
+
+  ((elemBottom <= docViewBottom) and (elemTop >= docViewTop))
+
 
 
 reveal_post = (link)->

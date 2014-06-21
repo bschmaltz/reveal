@@ -1,4 +1,4 @@
-<li id="<%= post['id'] %>">
+<li id="<%= post['id'] %>" class="post">
   <%if post['current_user_is_poster'] %>
     <%= link_to 'delete', "", class: "delete_post", :data => { :id => post['id'] }%>
     <% if post['revealed']%>
@@ -24,8 +24,6 @@
        (Me)
     <% end %>
   </div>
-  <div class="post_current_user_is_poster hidden"><%= post['current_user_is_poster'] %></div>
-  <div class="post_current_user_shared hidden"><%= post['current_user_shared'] %></div>
   <div class="post_content">says: <%= post['content'] %></div>
   <div class="post_vote_stat">votes: <%= post['vote_stat'] %></div>
   <div class="post_share_stat">shares: <%= post['share_stat'] %></div>
