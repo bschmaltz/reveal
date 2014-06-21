@@ -48,7 +48,6 @@ load_posts = ->
         $('.ajax_loader').hide()
         alert('posts failed to load')
       success: (data) ->
-        alert(data)
         $('.ajax_loader').hide()
         if data.length == 0
           last_post.parent().after('<div id="end_of_posts">You\'ve reached the end of the feed</div>')
