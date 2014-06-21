@@ -59,7 +59,7 @@ load_posts = ->
             delete_link = ""
             post_data="data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\""
             if post.current_user_is_poster
-              if post.revealed
+              if !post.revealed
                 reveal_link = "<a href=\"\" data-id=\"#{post.id}\" class=\"reveal_post\">reveal</a>"
               else
                 reveal_link = "<a href=\"\" data-id=\"#{post.id}\" class=\"hide_post\">hide</a>"
