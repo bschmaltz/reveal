@@ -1,12 +1,4 @@
 <li id="<%= post['id'] %>" class="post">
-  <%if post['current_user_is_poster'] %>
-    <%= link_to 'delete', "", class: "delete_post", :data => { :id => post['id'] }%>
-    <% if post['revealed']%>
-      <%= link_to 'hide', "", class: "hide_post", :data => { :id => post['id'] }%>
-    <% else %>
-      <%= link_to 'reveal', "", class: "reveal_post", :data => { :id => post['id'] }%>
-    <% end %>
-  <% end %>
   <div class="post_vote" data-uservote="<%= post['current_user_vote'] %>" data-id="<%= post['id'] %>" data-isposter="<%= post['current_user_is_poster'] %>" data-vote="<%= post['vote_stat'] %>">
     <% if post['current_user_vote']=='up' %>
       <div class="post_vote_up bold">+</div>
@@ -27,4 +19,12 @@
   <div class="post_content">says: <%= post['content'] %></div>
   <div class="post_vote_stat">votes: <%= post['vote_stat'] %></div>
   <div class="post_share_stat">shares: <%= post['share_stat'] %></div>
+  <%if post['current_user_is_poster'] %>
+    <% if post['revealed']%>
+      <%= link_to 'hide', "", class: "hide_post", :data => { :id => post['id'] }%>
+    <% else %>
+      <%= link_to 'reveal', "", class: "reveal_post", :data => { :id => post['id'] }%>
+    <% end %>
+    <%= link_to 'delete', "", class: "delete_post", :data => { :id => post['id'] }%>
+  <% end %>
 </li>

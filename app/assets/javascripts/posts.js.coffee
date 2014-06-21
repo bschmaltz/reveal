@@ -73,7 +73,7 @@ load_posts = ->
               else
                 post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\"><div class=\"post_vote_up\">+</div><div class=\"post_vote_down\">-</div></div>"
 
-            $('.post').last().after("<li id=\"#{post.id}\" #{post_data} class=\"post\">#{reveal_link} #{delete_link}#{post_vote}<div class=\"post_username\">user: #{username}</div><div class=\"post_content\">says: #{post.content}</div><div class=\"post_vote_stat\">votes: #{post.vote_stat}</div><div class=\"post_share_stat\">shares: #{post.share_stat}</div></li>")
+            $('.post').last().after("<li id=\"#{post.id}\" #{post_data} class=\"post\">#{post_vote}<div class=\"post_username\">user: #{username}</div><div class=\"post_content\">says: #{post.content}</div><div class=\"post_vote_stat\">votes: #{post.vote_stat}</div><div class=\"post_share_stat\">shares: #{post.share_stat}</div>#{reveal_link} #{delete_link}</li>")
           rebind_posts()
           $(document).scroll ->
             load_posts()
