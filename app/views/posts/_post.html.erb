@@ -7,13 +7,13 @@
       <%= link_to 'reveal', "", class: "reveal_post", :data => { :id => post['id'] }%>
     <% end %>
   <% end %>
-  <div class="post_vote">
+  <div class="post_vote" data-uservote="<%= post['current_user_vote'] %>" data-id="<%= post['id'] %>" data-isposter="<%= post['current_user_is_poster'] %>" data-vote="<%= post['vote_stat'] %>">
     <% if post['current_user_vote']=='up' %>
-      <div class="post_vote_up"><b>+</b></div>
+      <div class="post_vote_up bold">+</div>
       <div class="post_vote_down">-</div>
     <% elsif post['current_user_vote']=='down' %>
       <div class="post_vote_up">+</div>
-      <div class="post_vote_down"><b>-</b></div>
+      <div class="post_vote_down bold">-</div>
     <% else %>
       <div class="post_vote_up">+</div>
       <div class="post_vote_down">-</div>
@@ -25,8 +25,6 @@
     <% end %>
   </div>
   <div class="post_current_user_is_poster hidden"><%= post['current_user_is_poster'] %></div>
-  <div class="post_current_user_vote hidden"><%= post['current_user_vote'] %></div>
-
   <div class="post_current_user_shared hidden"><%= post['current_user_shared'] %></div>
   <div class="post_content">says: <%= post['content'] %></div>
   <div class="post_vote_stat">votes: <%= post['vote_stat'] %></div>
