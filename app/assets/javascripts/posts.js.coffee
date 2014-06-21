@@ -16,7 +16,7 @@ reveal_post = (link)->
   link.unbind()
   id = link.data().id
   auth_token = $("#auth_user_info").data().token
-  $.ajax "http://reveal-api.heroku.com/posts/reveal/#{id}",
+  $.ajax "http://reveal-api.herokuapp.com/posts/reveal/#{id}",
       type: 'PUT'
       contentType: 'application/json'
       beforeSend: (request) ->
@@ -38,7 +38,7 @@ hide_post = (link)->
   link.unbind()
   id = link.data().id
   auth_token = $("#auth_user_info").data().token
-  $.ajax "http://reveal-api.heroku.com/posts/hide/#{id}",
+  $.ajax "http://reveal-api.herokuapp.com/posts/hide/#{id}",
       type: 'PUT'
       contentType: 'application/json'
       beforeSend: (request) ->
@@ -60,7 +60,7 @@ delete_post = (link)->
   link.unbind()
   id = link.data().id
   auth_token = $("#auth_user_info").data().token
-  $.ajax "http://reveal-api.heroku.com/posts/#{id}",
+  $.ajax "http://reveal-api.herokuapp.com/posts/#{id}",
       type: 'DELETE'
       contentType: 'application/json'
       beforeSend: (request) ->

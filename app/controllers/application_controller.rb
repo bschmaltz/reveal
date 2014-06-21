@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  before_filter :set_headers
 
   def home
     if authenticated?
@@ -27,19 +26,12 @@ class ApplicationController < ActionController::Base
 
   def api_url
     "http://reveal-api.herokuapp.com"
-    #"http://localhost:3001"
   end
 
   def authorize
     if !authenticated?
-      flash[:erro] = "You need to log in to do that."
+      flash[:error] = "You need to log in to do that."
       redirect_to root_path
     end
-  end
-
-  private
-
-  def set_headers
-    headers['Access-Control-Allow-Origin'] = 'http://localhost:3001'
   end
 end
