@@ -83,7 +83,7 @@ element_in_scroll = (elem)->
   totalHeight = document.body.offsetHeight
   visibleHeight = document.documentElement.clientHeight
   
-  totalHeight <= currentScroll + visibleHeight and ($('#feed_end'))
+  totalHeight <= currentScroll + visibleHeight and ($('.feed_end')[0])
 
 
 reveal_post = (link)->
