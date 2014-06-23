@@ -13,6 +13,9 @@
  *= require_tree .
  *= require_self
  */
+body{
+  -webkit-text-size-adjust:100%
+}
 .alert-success{
   color: green;
 }
@@ -31,10 +34,10 @@
   font-size: 25px;
 }
 .post_vote_up{
-  display: inline-block;
+  display: block;
 }
 .post_vote_down{
-  display: inline-block;
+  display: block;
 }
 #settings_user_avatar_div{
   height: 300px;
