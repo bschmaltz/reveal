@@ -29,7 +29,6 @@
 .post{
   margin-top: 20px;
   font-size: 25px;
-  -webkit-text-size-adjust: none;
 }
 .post_vote_up{
   display: inline-block;
