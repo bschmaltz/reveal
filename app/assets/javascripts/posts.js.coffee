@@ -54,14 +54,14 @@ load_posts = ->
               else
                 reveal_link = "<a href=\"\" data-id=\"#{post.id}\" class=\"hide_post\">hide</a>"
               delete_link = "<a href=\"\" data-id=\"#{post.id}\" class=\"delete_post\">delete</a>"
-              post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\"><div class=\"post_vote_up bold\">+</div><div class=\"post_vote_down\">-</div></div>"
+              post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\"><div class=\"post_vote_up bold\">VOTE UP</div><div class=\"post_vote_down\">VOTE DOWN</div></div>"
             else
               if post.current_user_vote == 'up'
-                post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\"><div class=\"post_vote_up bold\">+</div><div class=\"post_vote_down\">-</div></div>"
+                post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\"><div class=\"post_vote_up bold\">VOTE UP</div><div class=\"post_vote_down\">VOTE DOWN</div></div>"
               else if post.current_user_vote == 'down'
-                post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\"><div class=\"post_vote_up\">+</div><div class=\"post_vote_down bold\">-</div></div>"
+                post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\"><div class=\"post_vote_up\">VOTE UP</div><div class=\"post_vote_down bold\">VOTE DOWN</div></div>"
               else
-                post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\"><div class=\"post_vote_up\">+</div><div class=\"post_vote_down\">-</div></div>"
+                post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\"><div class=\"post_vote_up\">VOTE UP</div><div class=\"post_vote_down\">VOTE DOWN</div></div>"
 
             $('.post').last().after("<li id=\"#{post.id}\" #{post_data} class=\"post\">#{post_vote}<div class=\"post_username\">user: #{username}</div><div class=\"post_content\">says: #{post.content}</div><div class=\"post_vote_stat\">votes: #{post.vote_stat}</div><div class=\"post_share_stat\">shares: #{post.share_stat}</div>#{reveal_link} #{delete_link}</li>")
           rebind_posts()
