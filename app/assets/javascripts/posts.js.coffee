@@ -71,14 +71,19 @@ load_posts = ->
 
 
 element_in_scroll = (elem)->
-  docViewTop = $(window).scrollTop();
-  docViewBottom = docViewTop + $(window).height()
-
-  elemTop = elem.offset().top
-  elemBottom = elemTop + elem.height()
-
-  ((elemBottom <= docViewBottom) and (elemTop >= docViewTop))
-
+  totalHeight = 0
+  currentScroll = 0
+  visibleHeight = 0
+  
+  if (document.documentElement.scrollTop)
+    currentScroll = document.documentElement.scrollTop
+  else
+    currentScroll = document.body.scrollTop
+  
+  totalHeight = document.body.offsetHeight
+  visibleHeight = document.documentElement.clientHeight
+  
+  totalHeight <= currentScroll + visibleHeight
 
 
 reveal_post = (link)->
