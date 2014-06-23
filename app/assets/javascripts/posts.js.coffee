@@ -1,5 +1,4 @@
 api_url="http://reveal-api.herokuapp.com"
-assets_url="http://s3.amazonaws.com/reveal-api-assets"
 
 $ ->
   $(document).scroll ->
@@ -122,7 +121,7 @@ hide_post = (link)->
         link.on click: ->
           reveal_post($(this))
         link.parent().find('.post_username').text('user: Anonymous (Me)')
-        link.parent().find('.post_avatar_image').attr('src', assets_url+"/assets/default_avatars/thumb/anonymous.jpg")
+        link.parent().find('.post_avatar_image').attr('src', data.avatar_thumb)
         link.parent().fadeIn('fast')
 
 delete_post = (link)->
