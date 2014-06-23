@@ -26,13 +26,14 @@
   color: blue;
   font-weight: bold;
 }
+.post{
+  margin-top: 20px;
+}
 .post_vote_up{
-  height: 20px;
-  width: 20px;
+  display: inline-block;
 }
 .post_vote_down{
-  height: 20px;
-  width: 20px;
+  display: inline-block;
 }
 #settings_user_avatar_div{
   height: 300px;

@@ -1,14 +1,14 @@
 <li id="<%= post['id'] %>" class="post">
   <div class="post_vote" data-uservote="<%= post['current_user_vote'] %>" data-id="<%= post['id'] %>" data-isposter="<%= post['current_user_is_poster'] %>" data-vote="<%= post['vote_stat'] %>">
     <% if post['current_user_vote']=='up' %>
-      <div class="post_vote_up bold">+</div>
-      <div class="post_vote_down">-</div>
+      <div class="post_vote_up bold">VOTE UP</div>
+      <div class="post_vote_down">VOTE DOWN</div>
     <% elsif post['current_user_vote']=='down' %>
-      <div class="post_vote_up">+</div>
-      <div class="post_vote_down bold">-</div>
+      <div class="post_vote_up">VOTE UP</div>
+      <div class="post_vote_down bold">VOTE DOWN</div>
     <% else %>
-      <div class="post_vote_up">+</div>
-      <div class="post_vote_down">-</div>
+      <div class="post_vote_up">VOTE UP</div>
+      <div class="post_vote_down">VOTE DOWN</div>
     <% end %>
   </div>
   <div class="post_username">user: <%= post['username'] %>
