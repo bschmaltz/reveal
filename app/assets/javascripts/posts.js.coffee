@@ -48,6 +48,7 @@ load_posts = ->
             reveal_link = ""
             delete_link = ""
             post_data="data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\""
+            post_avatar = "<div class=\"post_avatar_div\"><img src=\""+post.avatar_thumb+"\" class=\"post_avatar_image\"></div>"
             if post.current_user_is_poster
               if !post.revealed
                 reveal_link = "<a href=\"\" data-id=\"#{post.id}\" class=\"reveal_post\">reveal</a>"
@@ -63,7 +64,7 @@ load_posts = ->
               else
                 post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\"><div class=\"post_vote_up\">VOTE UP</div><div class=\"post_vote_down\">VOTE DOWN</div></div>"
 
-            $('.post').last().after("<li id=\"#{post.id}\" #{post_data} class=\"post\">#{post_vote}<div class=\"post_username\">user: #{username}</div><div class=\"post_content\">says: #{post.content}</div><div class=\"post_vote_stat\">votes: #{post.vote_stat}</div><div class=\"post_share_stat\">shares: #{post.share_stat}</div>#{reveal_link} #{delete_link}</li>")
+            $('.post').last().after("<li id=\"#{post.id}\" #{post_data} class=\"post\">#{post_vote}<div class=\"post_username\">user: #{username}</div>#{post_avatar}<div class=\"post_content\">says: #{post.content}</div><div class=\"post_vote_stat\">votes: #{post.vote_stat}</div><div class=\"post_share_stat\">shares: #{post.share_stat}</div>#{reveal_link} #{delete_link}</li>")
           rebind_posts()
           $(document).scroll ->
             load_posts()
