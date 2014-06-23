@@ -47,10 +47,8 @@
 }
 .post_control{
   display: inline-block;
+  font-size: 25px;
   cursor:pointer;
   color:blue;
   text-decoration:underline;
-}
-.post_control:hover{
-  text-decoration:none;
 }
