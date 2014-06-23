@@ -10,8 +10,8 @@ module ApplicationHelper
   end
 
   def api_url
-    #{}"http://reveal-api.herokuapp.com"
-    "http://localhost:3001"
+    "http://reveal-api.herokuapp.com"
+    #{}"http://localhost:3001"
   end
 
   def authenticated?

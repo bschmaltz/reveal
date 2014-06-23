@@ -1,8 +1,7 @@
-<div id="feed">
-  <ul class="posts">
-    <% @posts.each do |post| %>
-      <%= render 'posts/post', :post => post %>
-    <% end %>
-  </ul>
-</div>
+<ul class="posts">
+  <% @posts.each do |post| %>
+    <%= render 'posts/post', :post => post %>
+  <% end %>
+</ul>
 <%= image_tag("ajax-loader.gif", class: "ajax_loader hidden") %>
+<div id="feed_end"></div>

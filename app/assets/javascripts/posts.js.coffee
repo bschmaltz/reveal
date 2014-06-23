@@ -1,6 +1,8 @@
 api_url="http://reveal-api.herokuapp.com"
 
 $ ->
+  $(document).scroll ->
+    load_posts()
   rebind_posts()
 
 rebind_posts = ->
@@ -21,7 +23,7 @@ rebind_posts = ->
 
 load_posts = ->
   last_post = $('.post').last()
-  if element_in_scroll(last_post)
+  if element_in_scroll($('#feed_end'))
     $(document).unbind('scroll')
     id = last_post.attr('id')
     auth_token = $("#auth_user_info").data().token
