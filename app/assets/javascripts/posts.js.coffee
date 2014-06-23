@@ -90,10 +90,8 @@ reveal_post = (link)->
       contentType: 'application/json'
       beforeSend: (request) ->
         request.setRequestHeader("Authorization", "Token token=#{auth_token}")
-        link.parent().fadeOut('fast')
       error: ->
         alert('reveal fail')
-        link.parent().fadeIn('fast')
       success: (data) ->
         link.text('hide')
         link.attr('class', 'post_control hide_post')
@@ -101,7 +99,6 @@ reveal_post = (link)->
           hide_post($(this))
         link.parent().find('.post_username').text("user: "+data.username)
         link.parent().find('.post_avatar_image').attr('src', data.avatar_thumb)
-        link.parent().fadeIn('fast')
 
 hide_post = (link)->
   link.unbind()
@@ -112,10 +109,8 @@ hide_post = (link)->
       contentType: 'application/json'
       beforeSend: (request) ->
         request.setRequestHeader("Authorization", "Token token=#{auth_token}")
-        link.parent().fadeOut('fast')
       error: ->
         alert('hide fail')
-        link.parent().fadeIn('fast')
       success: (data) ->
         link.text('reveal')
         link.attr('class', 'post_control reveal_post')
@@ -123,7 +118,6 @@ hide_post = (link)->
           reveal_post($(this))
         link.parent().find('.post_username').text('user: Anonymous (Me)')
         link.parent().find('.post_avatar_image').attr('src', data.avatar_thumb)
-        link.parent().fadeIn('fast')
 
 delete_post = (link)->
   link.unbind()
@@ -134,12 +128,11 @@ delete_post = (link)->
       contentType: 'application/json'
       beforeSend: (request) ->
         request.setRequestHeader("Authorization", "Token token=#{auth_token}")
-        link.parent().fadeOut('fast')
+        link.parent().remove()
       error: ->
         link.on click: ->
           delete_post($(this))
         alert('delete fail')
-        link.parent().fadeIn('fast')
 
 post_vote_up = (up_arrow)->
   up_arrow.unbind()
@@ -163,13 +156,11 @@ post_vote_up = (up_arrow)->
         data: JSON.stringify({vote: {post_id: id, user_id: user_id, up: true}})
         beforeSend: (request) ->
           request.setRequestHeader("Authorization", "Token token=#{auth_token}")
-          up_arrow.parent().fadeOut('fast')
         error: ->
           alert('vote failed')
           up_arrow.on click: (e)->
             e.preventDefault()
             post_vote_up($(this))
-          up_arrow.parent().fadeIn('fast')
         success: (data)->
           if data.success
             vote_dif = 1
@@ -183,14 +174,11 @@ post_vote_up = (up_arrow)->
             up_arrow.on click: (e)->
               e.preventDefault()
               post_vote_up($(this))
-            up_arrow.parent().fadeIn('fast')
           else
             alert('vote failed')
             up_arrow.on click: (e)->
               e.preventDefault()
               post_vote_down($(this))
-            up_arrow.parent().fadeIn('fast')
-          up_arrow.parent().fadeIn('fast')
         complete: ->
           up_arrow.on click: ->
             post_vote_up($(this))
@@ -219,17 +207,15 @@ post_vote_down = (down_arrow)->
         data: JSON.stringify({vote: {post_id: id, user_id: user_id, up: false}})
         beforeSend: (request) ->
           request.setRequestHeader("Authorization", "Token token=#{auth_token}")
-          down_arrow.parent().fadeOut('fast')
         error: ->
           alert('vote failed')
           down_arrow.on click: (e)->
             e.preventDefault()
             post_vote_down($(this))
-          down_arrow.parent().fadeIn('fast')
         success:(data)->
           if data.success
             vote_dif = -1
-            if up_arrow.prev().hasClass('bold')
+            if down_arrow.prev().hasClass('bold')
               vote_dif = -2
             down_arrow.attr('class', 'post_vote_down bold')
             down_arrow.prev().removeClass('bold')
@@ -239,13 +225,11 @@ post_vote_down = (down_arrow)->
             down_arrow.on click: (e)->
               e.preventDefault()
               post_vote_down($(this))
-            down_arrow.parent().fadeIn('fast')
           else
             alert('vote failed')
             down_arrow.on click: (e)->
               e.preventDefault()
               post_vote_down($(this))
-            down_arrow.parent().fadeIn('fast')
         complete: ->
           down_arrow.prev().on click: ->
             post_vote_up($(this))
