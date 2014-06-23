@@ -172,11 +172,14 @@ post_vote_up = (up_arrow)->
           up_arrow.parent().fadeIn('fast')
         success: (data)->
           if data.success
+            vote_dif = 1
+            if up_arrow.next().hasClass('bold')
+              vote_dif = 2
             up_arrow.attr('class', 'post_vote_down bold')
             up_arrow.next().removeClass('bold')
-            up_arrow.parent().parent().find('.post_vote_stat').text("votes: #{vote_stat+1}")
+            up_arrow.parent().parent().find('.post_vote_stat').text("votes: #{vote_stat+vote_dif}")
             up_arrow.parent().data('uservote', 'up')
-            up_arrow.parent().data('vote', vote_stat+1)
+            up_arrow.parent().data('vote', vote_stat+vote_dif)
             up_arrow.on click: (e)->
               e.preventDefault()
               post_vote_up($(this))
@@ -225,11 +228,14 @@ post_vote_down = (down_arrow)->
           down_arrow.parent().fadeIn('fast')
         success:(data)->
           if data.success
+            vote_dif = -1
+            if up_arrow.prev().hasClass('bold')
+              vote_dif = -2
             down_arrow.attr('class', 'post_vote_down bold')
             down_arrow.prev().removeClass('bold')
-            down_arrow.parent().parent().find('.post_vote_stat').text("votes: #{vote_stat-1}")
+            down_arrow.parent().parent().find('.post_vote_stat').text("votes: #{vote_stat+vote_dif}")
             down_arrow.parent().data('uservote', 'down')
-            down_arrow.parent().data('vote', vote_stat-1)
+            down_arrow.parent().data('vote', vote_stat+vote_dif)
             down_arrow.on click: (e)->
               e.preventDefault()
               post_vote_down($(this))
