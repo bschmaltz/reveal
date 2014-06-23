@@ -9,6 +9,11 @@ module ApplicationHelper
     end
   end
 
+  def api_url
+    #{}"http://reveal-api.herokuapp.com"
+    "http://localhost:3001"
+  end
+
   def authenticated?
     !session[:user].nil?
   end

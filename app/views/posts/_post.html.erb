@@ -16,15 +16,18 @@
        (Me)
     <% end %>
   </div>
+  <div class="post_avatar_div">
+    <img src="<%= api_url+post['avatar_thumb'] %>" class="post_avatar_image">
+  </div>
   <div class="post_content">says: <%= post['content'] %></div>
   <div class="post_vote_stat">votes: <%= post['vote_stat'] %></div>
   <div class="post_share_stat">shares: <%= post['share_stat'] %></div>
   <%if post['current_user_is_poster'] %>
     <% if post['revealed']%>
-      <%= link_to 'hide', "", class: "hide_post", :data => { :id => post['id'] }%>
+      <div class="post_control hide_post" data-id="<%=post['id']%>">hide</div>
     <% else %>
-      <%= link_to 'reveal', "", class: "reveal_post", :data => { :id => post['id'] }%>
+      <div class="post_control reveal_post" data-id="<%=post['id']%>">reveal</div>
     <% end %>
-    <%= link_to 'delete', "", class: "delete_post", :data => { :id => post['id'] }%>
+    <div class="post_control delete_post" data-id="<%=post['id']%>">delete</div>
   <% end %>
 </li>

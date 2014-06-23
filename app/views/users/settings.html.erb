@@ -1,0 +1,14 @@
+Edit Your Profile Picture
+<div id="settings_user_avatar_div">
+  <% if !@user['avatar_medium'].empty? %>
+    <img src="<%= api_url+@user['avatar_medium'] %>" id="settings_user_avatar">
+  <% end %>
+</div>
+
+<%= image_tag("ajax-loader.gif", class: "ajax_loader hidden") %>
+
+<form id="avatar_uploader">
+  <input type="file" name="avatar" id="avatar_browser">
+  <input type="text" name="remote_url" id="avatar_remote_url">
+  <input type="submit" value="Upload">
+</form>

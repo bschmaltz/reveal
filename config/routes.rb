@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   post '/users', to: 'users#create'
   get '/users/:id', to: 'users#show'
+  get '/users/settings/:id', to: 'users#settings'
   post '/users/login', to: 'users#login'
   get '/users_logout', to: 'users#logout', as: :logout
 

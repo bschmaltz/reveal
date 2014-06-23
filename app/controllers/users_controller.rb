@@ -46,6 +46,16 @@ class UsersController < ApplicationController
     end
   end
 
+  def settings
+    @user =  HTTParty.get("#{api_url}/users/#{params[:id]}")
+    if authenticated?
+      @user_posts = HTTParty.get("#{api_url}/posts/index_for_user/#{params[:id]}",
+        :headers => { 'Authorization' => "Token token=#{current_user['auth_token']}" })
+    else
+      redirect_to root_path
+    end
+  end
+
   def logout
     session.clear
     redirect_to root_path
