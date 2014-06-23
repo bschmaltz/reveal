@@ -1,5 +1,5 @@
 <h1><%= @user['username']%></h1>
-<img src="<%= api_url+@user['avatar_medium'] %>" id="user_avatar">
+<img src="<%= @user['avatar_medium'] %>" id="user_avatar">
 <% if @user['username']==current_user['username'] %>
   <br />
   <%= link_to 'Update Profile', "/users/settings/#{current_user['id']}" %>

@@ -1,7 +1,7 @@
 Edit Your Profile Picture
 <div id="settings_user_avatar_div">
   <% if !@user['avatar_medium'].empty? %>
-    <img src="<%= api_url+@user['avatar_medium'] %>" id="settings_user_avatar">
+    <img src="<%= @user['avatar_medium'] %>" id="settings_user_avatar">
   <% end %>
 </div>
 

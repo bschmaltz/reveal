@@ -36,7 +36,7 @@ upload_avatar_from_browser = ->
     success: (data) ->
       $('.ajax_loader').hide()
       if data.success
-        $('#settings_user_avatar').attr('src', api_url+data.avatar_medium)
+        $('#settings_user_avatar').attr('src', data.avatar_medium)
       else
         alert('There was an error uploading')
 
@@ -54,7 +54,7 @@ upload_avatar_from_url = ->
     success: (data) ->
       $('.ajax_loader').hide()
       if data.success
-        $('#settings_user_avatar').attr('src', api_url+data.avatar_medium)
+        $('#settings_user_avatar').attr('src', data.avatar_medium)
       else
         alert('There was an error uploading')
 
