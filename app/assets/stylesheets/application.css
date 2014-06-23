@@ -13,9 +13,6 @@
  *= require_tree .
  *= require_self
  */
-body{
-  -webkit-text-size-adjust:100%
-}
 .alert-success{
   color: green;
 }
