@@ -1,14 +1,14 @@
 <li id="<%= post['id'] %>" class="post">
-  <div class="post_vote" data-uservote="<%= post['current_user_vote'] %>" data-id="<%= post['id'] %>" data-isposter="<%= post['current_user_is_poster'] %>" data-vote="<%= post['vote_stat'] %>">
-    <% if post['current_user_vote']=='up' %>
-      <div class="post_vote_up bold">VOTE UP</div>
-      <div class="post_vote_down">VOTE DOWN</div>
-    <% elsif post['current_user_vote']=='down' %>
-      <div class="post_vote_up">VOTE UP</div>
-      <div class="post_vote_down bold">VOTE DOWN</div>
+  <div class="post_vote" data-uservote="<%= post['current_user_vote'] %>" data-id="<%= post['id'] %>" data-isposter="<%= post['current_user_is_poster'] %>" data-watchstat="<%= post['watch_stat'] %>" data-ignorestat="<%= post['ignore_stat'] %>">
+    <% if post['current_user_vote']=='watch' %>
+      <div class="post_watch bold">WATCH</div>
+      <div class="post_ignore">IGNORE</div>
+    <% elsif post['current_user_vote']=='ingore' %>
+      <div class="post_watch">WATCH</div>
+      <div class="post_ignore bold">IGNORE</div>
     <% else %>
-      <div class="post_vote_up">VOTE UP</div>
-      <div class="post_vote_down">VOTE DOWN</div>
+      <div class="post_watch">WATCH</div>
+      <div class="post_ingore">IGNORE</div>
     <% end %>
   </div>
   <div class="post_username">user: <%= post['username'] %>
@@ -20,7 +20,8 @@
     <img src="<%= post['avatar_thumb'] %>" class="post_avatar_image">
   </div>
   <div class="post_content">says: <%= post['content'] %></div>
-  <div class="post_vote_stat">votes: <%= post['vote_stat'] %></div>
+  <div class="post_watch_stat">watches: <%= post['watch_stat'] %></div>
+  <div class="post_ignore_stat">ignores: <%= post['ignore_stat'] %></div>
   <div class="post_share_stat">shares: <%= post['share_stat'] %></div>
   <%if post['current_user_is_poster'] %>
     <% if post['revealed']%>

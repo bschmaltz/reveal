@@ -44,6 +44,7 @@ class UsersController < ApplicationController
     else
       @user_posts = HTTParty.get("#{api_url}/posts/index_for_user/#{params[:id]}")
     end
+    p "@user=#{@user.inspect}"
   end
 
   def settings

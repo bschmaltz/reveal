@@ -15,11 +15,11 @@ rebind_posts = ->
   $('.delete_post').on click: ->
     delete_post($(this))
 
-  $('.post_vote_up').on click: ->
-    post_vote_up($(this))
+  $('.post_watch').on click: ->
+    post_watch($(this))
 
-  $('.post_vote_down').on click: ->
-    post_vote_down($(this))
+  $('.post_ignore').on click: ->
+    post_ignore($(this))
 
 load_posts = ->
   last_post = $('.post').last()
@@ -47,7 +47,7 @@ load_posts = ->
             post_vote = ""
             reveal_link = ""
             delete_link = ""
-            post_data="data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\""
+            post_data="data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\""
             post_avatar = "<div class=\"post_avatar_div\"><img src=\""+post.avatar_thumb+"\" class=\"post_avatar_image\"></div>"
             if post.current_user_is_poster
               if !post.revealed
@@ -55,16 +55,16 @@ load_posts = ->
               else
                 reveal_link = "<a href=\"\" data-id=\"#{post.id}\" class=\"hide_post\">hide</a>"
               delete_link = "<a href=\"\" data-id=\"#{post.id}\" class=\"delete_post\">delete</a>"
-              post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\"><div class=\"post_vote_up bold\">VOTE UP</div><div class=\"post_vote_down\">VOTE DOWN</div></div>"
+              post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\"><div class=\"post_watch\">WATCH</div><div class=\"post_ignore\">IGNORE</div></div>"
             else
-              if post.current_user_vote == 'up'
-                post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\"><div class=\"post_vote_up bold\">VOTE UP</div><div class=\"post_vote_down\">VOTE DOWN</div></div>"
-              else if post.current_user_vote == 'down'
-                post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\"><div class=\"post_vote_up\">VOTE UP</div><div class=\"post_vote_down bold\">VOTE DOWN</div></div>"
+              if post.current_user_vote == 'watch'
+                post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\"><div class=\"post_watch bold\">WATCH</div><div class=\"post_ignore\">IGNORE</div></div>"
+              else if post.current_user_vote == 'ignore'
+                post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\"><div class=\"post_watch\">WATCH</div><div class=\"post_ignore bold\">IGNORE</div></div>"
               else
-                post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-vote=\"#{post.vote_stat}\"><div class=\"post_vote_up\">VOTE UP</div><div class=\"post_vote_down\">VOTE DOWN</div></div>"
+                post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\"><div class=\"post_watch\">WATCH</div><div class=\"post_ignore\">IGNORE</div></div>"
 
-            $('.post').last().after("<li id=\"#{post.id}\" #{post_data} class=\"post\">#{post_vote}<div class=\"post_username\">user: #{username}</div>#{post_avatar}<div class=\"post_content\">says: #{post.content}</div><div class=\"post_vote_stat\">votes: #{post.vote_stat}</div><div class=\"post_share_stat\">shares: #{post.share_stat}</div>#{reveal_link} #{delete_link}</li>")
+            $('.post').last().after("<li id=\"#{post.id}\" #{post_data} class=\"post\">#{post_vote}<div class=\"post_username\">user: #{username}</div>#{post_avatar}<div class=\"post_content\">says: #{post.content}</div><div class=\"post_watch_stat\">watches: #{post.watch_stat}</div><div class=\"post_ignore_stat\">ignores: #{post.ignore_stat}</div><div class=\"post_share_stat\">shares: #{post.share_stat}</div>#{reveal_link} #{delete_link}</li>")
           rebind_posts()
           $(document).scroll ->
             load_posts()
@@ -139,104 +139,110 @@ delete_post = (link)->
           delete_post($(this))
         alert('delete fail')
 
-post_vote_up = (up_arrow)->
-  up_arrow.unbind()
-  up_arrow.next().unbind()
-  id = up_arrow.parent().data().id
-  uservote = up_arrow.parent().data().uservote
-  isposter = up_arrow.parent().data().isposter
-  vote_stat = up_arrow.parent().data().vote
-  if uservote!='up' and !isposter
+post_watch = (watch_btn)->
+  watch_btn.unbind()
+  watch_btn.next().unbind()
+  id = watch_btn.parent().data().id
+  uservote = watch_btn.parent().data().uservote
+  isposter = watch_btn.parent().data().isposter
+  watch_stat = watch_btn.parent().data().watchstat
+  ignore_stat = watch_btn.parent().data().ignorestat
+  if uservote!='watch' and !isposter
     auth_token = $("#auth_user_info").data().token
     user_id = $("#auth_user_info").data().id
     method_type = 'POST'
     url = "#{api_url}/votes"
-    if uservote=='down'
+    if uservote=='ignore'
       method_type = 'PUT'
       url = "#{api_url}/votes/update"
     $.ajax url,
         type: method_type
         contentType: 'application/json'
         dataType: "json"
-        data: JSON.stringify({vote: {post_id: id, user_id: user_id, up: true}})
+        data: JSON.stringify({vote: {post_id: id, user_id: user_id, action: "watch"}})
         beforeSend: (request) ->
           request.setRequestHeader("Authorization", "Token token=#{auth_token}")
         error: ->
           alert('vote failed')
-          up_arrow.on click: (e)->
+          watch_btn.on click: (e)->
             e.preventDefault()
-            post_vote_up($(this))
+            post_watch($(this))
         success: (data)->
           if data.success
-            vote_dif = 1
-            if up_arrow.next().hasClass('bold')
-              vote_dif = 2
-            up_arrow.attr('class', 'post_vote_down bold')
-            up_arrow.next().removeClass('bold')
-            up_arrow.parent().parent().find('.post_vote_stat').text("votes: #{vote_stat+vote_dif}")
-            up_arrow.parent().data('uservote', 'up')
-            up_arrow.parent().data('vote', vote_stat+vote_dif)
-            up_arrow.on click: (e)->
+            ignore_dif = 0
+            if watch_btn.next().hasClass('bold')
+              ignore_dif = -1
+            watch_btn.attr('class', 'post_ignore bold')
+            watch_btn.next().removeClass('bold')
+            watch_btn.parent().parent().find('.post_watch_stat').text("watches: #{watch_stat+1}")
+            watch_btn.parent().data('uservote', 'watch')
+            watch_btn.parent().data('watchstat', watch_stat+1)
+            watch_btn.parent().parent().find('.post_ignore_stat').text("ignore: #{ignore_stat+ignore_dif}")
+            watch_btn.parent().data('ignorestat', ignore_stat+ignore_dif)
+            watch_btn.on click: (e)->
               e.preventDefault()
-              post_vote_up($(this))
+              post_watch($(this))
           else
             alert('vote failed')
-            up_arrow.on click: (e)->
+            watch_btn.on click: (e)->
               e.preventDefault()
-              post_vote_down($(this))
+              post_ignore($(this))
         complete: ->
-          up_arrow.on click: ->
-            post_vote_up($(this))
-          up_arrow.next().on click: ->
-            post_vote_down($(this))
+          watch_btn.on click: ->
+            post_watch($(this))
+          watch_btn.next().on click: ->
+            post_ignore($(this))
 
-post_vote_down = (down_arrow)->
-  down_arrow.unbind()
-  down_arrow.prev().unbind()
-  id = down_arrow.parent().data().id
-  uservote = down_arrow.parent().data().uservote
-  isposter = down_arrow.parent().data().isposter
-  vote_stat = down_arrow.parent().data().vote
-  if uservote!='down' and !isposter
+post_ignore = (ignore_btn)->
+  ignore_btn.unbind()
+  ignore_btn.prev().unbind()
+  id = ignore_btn.parent().data().id
+  uservote = ignore_btn.parent().data().uservote
+  isposter = ignore_btn.parent().data().isposter
+  watch_stat = ignore_btn.parent().data().watchstat
+  ignore_stat = ignore_btn.parent().data().ignorestat
+  if uservote!='ignore' and !isposter
     auth_token = $("#auth_user_info").data().token
     user_id = $("#auth_user_info").data().id
     method_type = 'POST'
     url = "#{api_url}/votes"
-    if uservote=='up'
+    if uservote=='watch'
       method_type = 'PUT'
       url = "#{api_url}/votes/update"
     $.ajax url,
         type: method_type
         contentType: 'application/json'
         dataType: "json"
-        data: JSON.stringify({vote: {post_id: id, user_id: user_id, up: false}})
+        data: JSON.stringify({vote: {post_id: id, user_id: user_id, action: "ignore"}})
         beforeSend: (request) ->
           request.setRequestHeader("Authorization", "Token token=#{auth_token}")
         error: ->
           alert('vote failed')
-          down_arrow.on click: (e)->
+          ignore_btn.on click: (e)->
             e.preventDefault()
-            post_vote_down($(this))
+            post_ignore($(this))
         success:(data)->
           if data.success
-            vote_dif = -1
-            if down_arrow.prev().hasClass('bold')
-              vote_dif = -2
-            down_arrow.attr('class', 'post_vote_down bold')
-            down_arrow.prev().removeClass('bold')
-            down_arrow.parent().parent().find('.post_vote_stat').text("votes: #{vote_stat+vote_dif}")
-            down_arrow.parent().data('uservote', 'down')
-            down_arrow.parent().data('vote', vote_stat+vote_dif)
-            down_arrow.on click: (e)->
+            watch_dif = 0
+            if ignore_btn.prev().hasClass('bold')
+              watch_dif = -1
+            ignore_btn.attr('class', 'post_ignore bold')
+            ignore_btn.prev().removeClass('bold')
+            ignore_btn.parent().parent().find('.post_ignore_stat').text("ignores: #{ignore_stat+1}")
+            ignore_btn.parent().data('uservote', 'ignore')
+            ignore_btn.parent().data('ignorestat', ignore_stat+1)
+            ignore_btn.parent().parent().find('.post_watch_stat').text("watches: #{watch_stat+watch_dif}")
+            ignore_btn.parent().data('watchstat', watch_stat+watch_dif)
+            ignore_btn.on click: (e)->
               e.preventDefault()
-              post_vote_down($(this))
+              post_ignore($(this))
           else
             alert('vote failed')
-            down_arrow.on click: (e)->
+            ignore_btn.on click: (e)->
               e.preventDefault()
-              post_vote_down($(this))
+              post_ignore($(this))
         complete: ->
-          down_arrow.prev().on click: ->
-            post_vote_up($(this))
-          down_arrow.on click: ->
-            post_vote_down($(this))
+          ignore_btn.prev().on click: ->
+            post_watch($(this))
+          ignore_btn.on click: ->
+            post_ignore($(this))
