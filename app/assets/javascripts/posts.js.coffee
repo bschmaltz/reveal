@@ -174,7 +174,7 @@ post_watch = (watch_btn)->
             watch_btn.parent().parent().find('.post_watch_stat').text("watches: #{watch_stat+1}")
             watch_btn.parent().data('uservote', 'watch')
             watch_btn.parent().data('watchstat', watch_stat+1)
-            watch_btn.parent().parent().find('.post_ignore_stat').text("ignore: #{ignore_stat+ignore_dif}")
+            watch_btn.parent().parent().find('.post_ignore_stat').text("ignores: #{ignore_stat+ignore_dif}")
             watch_btn.parent().data('ignorestat', ignore_stat+ignore_dif)
           else
             alert('vote failed')
