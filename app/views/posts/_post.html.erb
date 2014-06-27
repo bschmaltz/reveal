@@ -3,12 +3,12 @@
     <% if post['current_user_vote']=='watch' %>
       <div class="post_watch bold">WATCH</div>
       <div class="post_ignore">IGNORE</div>
-    <% elsif post['current_user_vote']=='ingore' %>
+    <% elsif post['current_user_vote']=='ignore' %>
       <div class="post_watch">WATCH</div>
       <div class="post_ignore bold">IGNORE</div>
     <% else %>
       <div class="post_watch">WATCH</div>
-      <div class="post_ingore">IGNORE</div>
+      <div class="post_ignore">IGNORE</div>
     <% end %>
   </div>
   <div class="post_username">user: <%= post['username'] %>

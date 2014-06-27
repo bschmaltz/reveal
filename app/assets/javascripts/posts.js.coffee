@@ -164,9 +164,6 @@ post_watch = (watch_btn)->
           request.setRequestHeader("Authorization", "Token token=#{auth_token}")
         error: ->
           alert('vote failed')
-          watch_btn.on click: (e)->
-            e.preventDefault()
-            post_watch($(this))
         success: (data)->
           if data.success
             ignore_dif = 0
@@ -179,14 +176,8 @@ post_watch = (watch_btn)->
             watch_btn.parent().data('watchstat', watch_stat+1)
             watch_btn.parent().parent().find('.post_ignore_stat').text("ignore: #{ignore_stat+ignore_dif}")
             watch_btn.parent().data('ignorestat', ignore_stat+ignore_dif)
-            watch_btn.on click: (e)->
-              e.preventDefault()
-              post_watch($(this))
           else
             alert('vote failed')
-            watch_btn.on click: (e)->
-              e.preventDefault()
-              post_ignore($(this))
         complete: ->
           watch_btn.on click: ->
             post_watch($(this))
@@ -218,9 +209,6 @@ post_ignore = (ignore_btn)->
           request.setRequestHeader("Authorization", "Token token=#{auth_token}")
         error: ->
           alert('vote failed')
-          ignore_btn.on click: (e)->
-            e.preventDefault()
-            post_ignore($(this))
         success:(data)->
           if data.success
             watch_dif = 0
@@ -233,14 +221,8 @@ post_ignore = (ignore_btn)->
             ignore_btn.parent().data('ignorestat', ignore_stat+1)
             ignore_btn.parent().parent().find('.post_watch_stat').text("watches: #{watch_stat+watch_dif}")
             ignore_btn.parent().data('watchstat', watch_stat+watch_dif)
-            ignore_btn.on click: (e)->
-              e.preventDefault()
-              post_ignore($(this))
           else
             alert('vote failed')
-            ignore_btn.on click: (e)->
-              e.preventDefault()
-              post_ignore($(this))
         complete: ->
           ignore_btn.prev().on click: ->
             post_watch($(this))
