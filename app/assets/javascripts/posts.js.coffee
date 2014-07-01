@@ -6,24 +6,29 @@ $ ->
   rebind_posts()
 
 rebind_posts = ->
-  $('.reveal_post').on click: ->
+  $('.reveal_post').on click: (e)->
+    e.stopPropagation()
     reveal_post($(this))
     
-  $('.hide_post').on click: ->
+  $('.hide_post').on click: (e)->
+    e.stopPropagation()
     hide_post($(this))
     
-  $('.delete_post').on click: ->
+  $('.delete_post').on click: (e)->
+    e.stopPropagation()
     delete_post($(this))
 
-  $('.post_watch').on click: ->
+  $('.post_watch').on click: (e)->
+    e.stopPropagation()
     post_watch($(this))
 
-  $('.post_ignore').on click: ->
+  $('.post_ignore').on click: (e)->
+    e.stopPropagation()
     post_ignore($(this))
 
   $('.post_listing').on click: (e)->
     class_clicked = $(e.target).attr('class')
-    if class_clicked!='reveal_post' and class_clicked!='hide_post' and class_clicked!='delete_post' and class_clicked!='post_watch' and class_clicked!='post_ignore' and class_clicked!='post_avatar_image' and class_clicked!='post_username_link'
+    if class_clicked!='post_avatar_image' and class_clicked!='post_username_link'
       view_post($(this))
 
 view_post = (post)->
@@ -110,7 +115,8 @@ reveal_post = (link)->
       success: (data) ->
         link.text('hide')
         link.attr('class', 'post_control hide_post')
-        link.on click: ->
+        link.on click: (e)->
+          e.stopPropagation()
           hide_post($(this))
         link.parent().find('.post_username').text("user: "+data.username)
         link.parent().find('.post_avatar_image').attr('src', data.avatar_thumb)
@@ -129,7 +135,8 @@ hide_post = (link)->
       success: (data) ->
         link.text('reveal')
         link.attr('class', 'post_control reveal_post')
-        link.on click: ->
+        link.on click: (e)->
+          e.stopPropagation()
           reveal_post($(this))
         link.parent().find('.post_username').text('user: Anonymous (Me)')
         link.parent().find('.post_avatar_image').attr('src', data.avatar_thumb)
@@ -145,7 +152,8 @@ delete_post = (link)->
         request.setRequestHeader("Authorization", "Token token=#{auth_token}")
         link.parent().remove()
       error: ->
-        link.on click: ->
+        link.on click: (e)->
+          e.stopPropagation()
           delete_post($(this))
         alert('delete fail')
 
@@ -189,9 +197,11 @@ post_watch = (watch_btn)->
           else
             alert('vote failed')
         complete: ->
-          watch_btn.on click: ->
+          watch_btn.on click: (e)->
+            e.stopPropagation()
             post_watch($(this))
-          watch_btn.next().on click: ->
+          watch_btn.next().on click: (e)->
+            e.stopPropagation()
             post_ignore($(this))
 
 post_ignore = (ignore_btn)->
@@ -234,7 +244,9 @@ post_ignore = (ignore_btn)->
           else
             alert('vote failed')
         complete: ->
-          ignore_btn.prev().on click: ->
+          ignore_btn.prev().on click: (e)->
+            e.stopPropagation()
             post_watch($(this))
-          ignore_btn.on click: ->
+          ignore_btn.on click: (e)->
+            e.stopPropagation()
             post_ignore($(this))
