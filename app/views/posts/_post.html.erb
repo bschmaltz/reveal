@@ -1,4 +1,4 @@
-<li id="<%= post['id'] %>" class="post">
+<li id="<%= post['id'] %>" class="post post_listing">
   <div class="post_vote" data-uservote="<%= post['current_user_vote'] %>" data-id="<%= post['id'] %>" data-isposter="<%= post['current_user_is_poster'] %>" data-watchstat="<%= post['watch_stat'] %>" data-ignorestat="<%= post['ignore_stat'] %>">
     <% if post['current_user_vote']=='watch' %>
       <div class="post_watch bold">WATCH</div>
@@ -11,24 +11,26 @@
       <div class="post_ignore">IGNORE</div>
     <% end %>
   </div>
-  <div class="post_username">user: <%= post['username'] %>
+  <div class="post_username">
+    <% if post['revealed'] %>
+      user: <a class="post_username_link" href="<%="/users/#{post['user_id']}"%>"><%= post['username'] %></a>
+    <% else %>
+      user: Anonymous 
+    <% end %>
     <% if post['current_user_is_poster'] and !post['revealed'] %>
-       (Me)
+      (Me)
     <% end %>
   </div>
   <div class="post_avatar_div">
+    <% if post['revealed'] %>
+      <a class="post_avatar_link" href="<%="/users/#{post['user_id']}"%>">
+    <% end %>
     <img src="<%= post['avatar_thumb'] %>" class="post_avatar_image">
+    <% if post['revealed'] %>
+      </a>
+    <% end %>
   </div>
   <div class="post_content">says: <%= post['content'] %></div>
   <div class="post_watch_stat">watches: <%= post['watch_stat'] %></div>
   <div class="post_ignore_stat">ignores: <%= post['ignore_stat'] %></div>
-  <div class="post_share_stat">shares: <%= post['share_stat'] %></div>
-  <%if post['current_user_is_poster'] %>
-    <% if post['revealed']%>
-      <div class="post_control hide_post" data-id="<%=post['id']%>">hide</div>
-    <% else %>
-      <div class="post_control reveal_post" data-id="<%=post['id']%>">reveal</div>
-    <% end %>
-    <div class="post_control delete_post" data-id="<%=post['id']%>">delete</div>
-  <% end %>
 </li>

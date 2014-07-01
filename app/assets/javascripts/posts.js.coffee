@@ -1,4 +1,4 @@
-api_url="http://reveal-api.herokuapp.com"
+api_url="https://reveal-api.herokuapp.com"
 
 $ ->
   $(document).scroll ->
@@ -20,6 +20,15 @@ rebind_posts = ->
 
   $('.post_ignore').on click: ->
     post_ignore($(this))
+
+  $('.post_listing').on click: (e)->
+    class_clicked = $(e.target).attr('class')
+    if class_clicked!='reveal_post' and class_clicked!='hide_post' and class_clicked!='delete_post' and class_clicked!='post_watch' and class_clicked!='post_ignore' and class_clicked!='post_avatar_image' and class_clicked!='post_username_link'
+      view_post($(this))
+
+view_post = (post)->
+  id = post.attr('id')
+  window.location = "/posts/#{id}"
 
 load_posts = ->
   last_post = $('.post').last()
@@ -43,18 +52,19 @@ load_posts = ->
           last_post.parent().after('<div id="end_of_posts">You\'ve reached the end of the feed</div>')
         else
           for post in data
-            username = if (!post.revealed and post.current_user_is_poster) then "Anonymous (Me)" else post.username
+            username = ""
             post_vote = ""
-            reveal_link = ""
-            delete_link = ""
             post_data="data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\""
             post_avatar = "<div class=\"post_avatar_div\"><img src=\""+post.avatar_thumb+"\" class=\"post_avatar_image\"></div>"
+            if !post.revealed and post.current_user_is_poster
+              username = "<div class=\"post_username\">user: Anonymous (Me)</div>"
+            else if !post.revealed
+              username = "<div class=\"post_username\">user: Anonymous</div>"
+            else
+              username ="<div class=\"post_username\">user: <a class=\"post_username_link\" href=\"/users/#{post.user_id}\">#{post.username}</a></div>"
+              post_avatar = "<div class=\"post_avatar_div\"><a class=\"post_avatar_link\" href=\"/users/#{post.user_id}\"><img src=\""+post.avatar_thumb+"\" class=\"post_avatar_image\"></a></div>"
+
             if post.current_user_is_poster
-              if !post.revealed
-                reveal_link = "<a href=\"\" data-id=\"#{post.id}\" class=\"reveal_post\">reveal</a>"
-              else
-                reveal_link = "<a href=\"\" data-id=\"#{post.id}\" class=\"hide_post\">hide</a>"
-              delete_link = "<a href=\"\" data-id=\"#{post.id}\" class=\"delete_post\">delete</a>"
               post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\"><div class=\"post_watch\">WATCH</div><div class=\"post_ignore\">IGNORE</div></div>"
             else
               if post.current_user_vote == 'watch'
@@ -64,7 +74,7 @@ load_posts = ->
               else
                 post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\"><div class=\"post_watch\">WATCH</div><div class=\"post_ignore\">IGNORE</div></div>"
 
-            $('.post').last().after("<li id=\"#{post.id}\" #{post_data} class=\"post\">#{post_vote}<div class=\"post_username\">user: #{username}</div>#{post_avatar}<div class=\"post_content\">says: #{post.content}</div><div class=\"post_watch_stat\">watches: #{post.watch_stat}</div><div class=\"post_ignore_stat\">ignores: #{post.ignore_stat}</div><div class=\"post_share_stat\">shares: #{post.share_stat}</div>#{reveal_link} #{delete_link}</li>")
+            $('.post').last().after("<li id=\"#{post.id}\" #{post_data} class=\"post post_listing\">#{post_vote}#{username}#{post_avatar}<div class=\"post_content\">says: #{post.content}</div><div class=\"post_watch_stat\">watches: #{post.watch_stat}</div><div class=\"post_ignore_stat\">ignores: #{post.ignore_stat}</div></li>")
           rebind_posts()
           $(document).scroll ->
             load_posts()

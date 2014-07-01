@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   end
 
   def api_url
-    "http://reveal-api.herokuapp.com"
+    "https://reveal-api.herokuapp.com"
     #{}"http://localhost:3001"
   end
 

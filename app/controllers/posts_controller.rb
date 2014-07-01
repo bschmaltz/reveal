@@ -31,10 +31,10 @@ class PostsController < ApplicationController
 
   def show
     if authenticated?
-      @post = HTTParty.get("#{api_url}/posts/#{params[:id]}", 
+      @post = HTTParty.get("#{api_url}/posts/show/#{params[:id]}", 
         :headers => { 'Authorization' => "Token token=#{current_user['auth_token']}" })
     else
-      @post = HTTParty.get("#{api_url}/posts/#{params[:id]}")
+      @post = HTTParty.get("#{api_url}/posts/show/#{params[:id]}")
     end
   end
 end

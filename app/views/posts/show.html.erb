@@ -1,14 +1,44 @@
-<%if @post['current_user_is_poster'] %>
-  <%= link_to 'delete', "@posts/delete/#{@post['id']}" %>
-  <% if !@post['revealed']%>
-    <%= link_to 'reveal', "@posts/reveal/#{@post['id']}" %>
+<div class="show_post">
+  <div class="post_vote" data-uservote="<%= @post['current_user_vote'] %>" data-id="<%= @post['id'] %>" data-isposter="<%= @post['current_user_is_poster'] %>" data-watchstat="<%= @post['watch_stat'] %>" data-ignorestat="<%= @post['ignore_stat'] %>">
+    <% if @post['current_user_vote']=='watch' %>
+      <div class="post_watch bold">WATCH</div>
+      <div class="post_ignore">IGNORE</div>
+    <% elsif @post['current_user_vote']=='ignore' %>
+      <div class="post_watch">WATCH</div>
+      <div class="post_ignore bold">IGNORE</div>
+    <% else %>
+      <div class="post_watch">WATCH</div>
+      <div class="post_ignore">IGNORE</div>
+    <% end %>
+  </div>
+  <div class="post_username">
+    <% if @post['revealed'] %>
+      user: <a class="post_username_link" href="<%="/users/#{@post['user_id']}"%>"><%= @post['username'] %></a>
+    <% else %>
+      user: Anonymous 
+    <% end %>
+    <% if @post['current_user_is_poster'] and !@post['revealed'] %>
+      (Me)
+    <% end %>
+  </div>
+  <div class="post_avatar_div">
+    <% if @post['revealed'] %>
+      <a class="post_avatar_link" href="<%="/users/#{@post['user_id']}"%>">
+    <% end %>
+    <img src="<%= @post['avatar_thumb'] %>" class="post_avatar_image">
+    <% if @post['revealed'] %>
+      </a>
+    <% end %>
+  </div>
+  <div class="post_content">says: <%= @post['content'] %></div>
+  <div class="post_watch_stat">watches: <%= @post['watch_stat'] %></div>
+  <div class="post_ignore_stat">ignores: <%= @post['ignore_stat'] %></div>
+  <%if @post['current_user_is_poster'] %>
+    <% if @post['revealed']%>
+      <div class="post_control hide_post" data-id="<%=@post['id']%>">hide</div>
+    <% else %>
+      <div class="post_control reveal_post" data-id="<%=@post['id']%>">reveal</div>
+    <% end %>
+    <div class="post_control delete_post" data-id="<%=@post['id']%>">delete</div>
   <% end %>
-<% end %>
-<div id="<%=@post['id']%>">
-  <div>user: <%= @post['username'] %></div>
-  <div>says: <%= @post['content'] %></div>
-  <div>votes: <%= post['vote_stat'] %></div>
-  <div>shares: <%= post['share_stat'] %></div>
-  <div>your vote: <%= post['current_user_vote'] %></div>
-  <div>did you share: <%= post['current_user_shared'] %></div>
 </div>

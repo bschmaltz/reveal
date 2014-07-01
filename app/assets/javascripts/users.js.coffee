@@ -1,4 +1,4 @@
-api_url="http://reveal-api.herokuapp.com"
+api_url="https://reveal-api.herokuapp.com"
 file = null
 $ ->
   jQuery("#avatar_browser").on change: ->
