@@ -3,7 +3,8 @@
 </div>
 <% if authenticated? %>
   <%= link_to "Logout", :logout %>
-  <%= link_to "Feed", '/posts' %>
+  <%= link_to "Feed-Location", '/posts' %>
+  <%= link_to "Feed-Followed", '/posts_followed' %>
   <%= link_to "Create Post", :new_post %>
   <%= link_to "Profile", "/users/#{current_user['id']}" %>
 <% end %>

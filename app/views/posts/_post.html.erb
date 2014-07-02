@@ -1,5 +1,5 @@
-<li id="<%= post['id'] %>" class="post post_listing">
-  <div class="post_vote" data-uservote="<%= post['current_user_vote'] %>" data-id="<%= post['id'] %>" data-isposter="<%= post['current_user_is_poster'] %>" data-watchstat="<%= post['watch_stat'] %>" data-ignorestat="<%= post['ignore_stat'] %>">
+<li class="post post_listing <%= post['id'] %>" data-id="<%= post['id'] %>">
+  <div class="post_vote" data-uservote="<%= post['current_user_vote'] %>" data-id="<%= post['id'] %>" data-isposter="<%= post['current_user_is_poster'] %>" data-watchstat="<%= post['watch_stat'] %>" data-ignorestat="<%= post['ignore_stat'] %>" data-itemtype="<%=  post['item_type'] %>" data-voteid="<%=  post['vote_id'] %>">
     <% if post['current_user_vote']=='watch' %>
       <div class="post_watch bold">WATCH</div>
       <div class="post_ignore">IGNORE</div>
@@ -33,4 +33,9 @@
   <div class="post_content">says: <%= post['content'] %></div>
   <div class="post_watch_stat">watches: <%= post['watch_stat'] %></div>
   <div class="post_ignore_stat">ignores: <%= post['ignore_stat'] %></div>
+  <% if post['item_type']=='watch' %>
+    <div class="watch_info">
+      Watched by <a class="watch_user_link" href="/users/<%= post['followed_user_id'] %>"><%= post['followed_username'] %></a>
+    </div>
+  <% end %>
 </li>

@@ -1,10 +1,13 @@
 api_url="https://reveal-api.herokuapp.com"
 #api_url="http://localhost:3001"
-
+feed = 'index'
 $ ->
+  if $('.posts')[0]
+    feed = $('.posts').data().feed
   $(document).scroll ->
     load_posts()
   rebind_posts()
+
 
 rebind_posts = ->
   $('.reveal_post').on click: (e)->
@@ -29,21 +32,30 @@ rebind_posts = ->
 
   $('.post_listing').on click: (e)->
     class_clicked = $(e.target).attr('class')
-    if class_clicked!='post_avatar_image' and class_clicked!='post_username_link'
+    if class_clicked!='post_avatar_image' and class_clicked!='post_username_link' and class_clicked!='watch_user_link'
       view_post($(this))
 
+
 view_post = (post)->
-  id = post.attr('id')
+  id = post.data().id
   window.location = "/posts/#{id}"
+
 
 load_posts = ->
   last_post = $('.post').last()
   if element_in_scroll($('#feed_end'))
     $(document).unbind('scroll')
-    id = last_post.attr('id')
+    url=''
+    if feed=='index'
+      url = "#{api_url}/posts/index/#{last_post.data().id}"
+    else
+      if last_post.data().itemtype=='watch'
+        url="#{api_url}/posts/index_followed_posts?last_vote_id=#{last_post.data().voteid}"
+      else
+        url="#{api_url}/posts/index_followed_posts?last_post_id=#{last_post.data().id}"
     auth_token = $("#auth_user_info").data().token
     user_id = $("#auth_user_info").data().id
-    $.ajax "#{api_url}/posts/index/#{id}",
+    $.ajax url,
       type: 'GET'
       contentType: 'application/json'
       beforeSend: (request) ->
@@ -60,8 +72,10 @@ load_posts = ->
           for post in data
             username = ""
             post_vote = ""
-            post_data="data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\""
+            post_data = "data-id=#{post.id}"
+            vote_data="data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\" data-itemtype=\"#{post.item_type}\" data-voteid=\"#{post.vote_id}\""
             post_avatar = "<div class=\"post_avatar_div\"><img src=\""+post.avatar_thumb+"\" class=\"post_avatar_image\"></div>"
+            watch_info = ""
             if !post.revealed and post.current_user_is_poster
               username = "<div class=\"post_username\">user: Anonymous (Me)</div>"
             else if !post.revealed
@@ -71,16 +85,19 @@ load_posts = ->
               post_avatar = "<div class=\"post_avatar_div\"><a class=\"post_avatar_link\" href=\"/users/#{post.user_id}\"><img src=\""+post.avatar_thumb+"\" class=\"post_avatar_image\"></a></div>"
 
             if post.current_user_is_poster
-              post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\"><div class=\"post_watch\">WATCH</div><div class=\"post_ignore\">IGNORE</div></div>"
+              post_vote = "<div class=\"post_vote\" #{vote_data}><div class=\"post_watch\">WATCH</div><div class=\"post_ignore\">IGNORE</div></div>"
             else
               if post.current_user_vote == 'watch'
-                post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\"><div class=\"post_watch bold\">WATCH</div><div class=\"post_ignore\">IGNORE</div></div>"
+                post_vote = "<div class=\"post_vote\" #{vote_data}><div class=\"post_watch bold\">WATCH</div><div class=\"post_ignore\">IGNORE</div></div>"
               else if post.current_user_vote == 'ignore'
-                post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\"><div class=\"post_watch\">WATCH</div><div class=\"post_ignore bold\">IGNORE</div></div>"
+                post_vote = "<div class=\"post_vote\" #{vote_data}><div class=\"post_watch\">WATCH</div><div class=\"post_ignore bold\">IGNORE</div></div>"
               else
-                post_vote = "<div class=\"post_vote\" data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\"><div class=\"post_watch\">WATCH</div><div class=\"post_ignore\">IGNORE</div></div>"
+                post_vote = "<div class=\"post_vote\" #{vote_data}><div class=\"post_watch\">WATCH</div><div class=\"post_ignore\">IGNORE</div></div>"
 
-            $('.post').last().after("<li id=\"#{post.id}\" #{post_data} class=\"post post_listing\">#{post_vote}#{username}#{post_avatar}<div class=\"post_content\">says: #{post.content}</div><div class=\"post_watch_stat\">watches: #{post.watch_stat}</div><div class=\"post_ignore_stat\">ignores: #{post.ignore_stat}</div></li>")
+            if post.item_type == 'watch'
+              watch_info = "<div class=\"watch_info\">Watched by <a class=\"watch_user_link\" href=\"users/#{post.followed_user_id}\">#{post.followed_username}</a></div>"
+
+            $('.post').last().after("<li #{post_data} class=\"post post_listing #{post.id}\">#{post_vote}#{username}#{post_avatar}<div class=\"post_content\">says: #{post.content}</div><div class=\"post_watch_stat\">watches: #{post.watch_stat}</div><div class=\"post_ignore_stat\">ignores: #{post.ignore_stat}</div>#{watch_info}</li>")
           rebind_posts()
           $(document).scroll ->
             load_posts()
@@ -125,6 +142,7 @@ reveal_post = (link)->
         link.parent().find('.post_username').text("user: "+data.username)
         link.parent().find('.post_avatar_image').attr('src', data.avatar_thumb)
 
+
 hide_post = (link)->
   link.unbind()
   id = link.data().id
@@ -148,6 +166,7 @@ hide_post = (link)->
         link.parent().find('.post_username').text('user: Anonymous (Me)')
         link.parent().find('.post_avatar_image').attr('src', data.avatar_thumb)
 
+
 delete_post = (link)->
   link.unbind()
   id = link.data().id
@@ -164,14 +183,13 @@ delete_post = (link)->
           delete_post($(this))
         alert('delete fail')
 
+
 post_watch = (watch_btn)->
   watch_btn.unbind()
   watch_btn.next().unbind()
   id = watch_btn.parent().data().id
   uservote = watch_btn.parent().data().uservote
   isposter = watch_btn.parent().data().isposter
-  watch_stat = watch_btn.parent().data().watchstat
-  ignore_stat = watch_btn.parent().data().ignorestat
   if uservote!='watch' and !isposter
     auth_token = $("#auth_user_info").data().token
     user_id = $("#auth_user_info").data().id
@@ -191,16 +209,7 @@ post_watch = (watch_btn)->
           alert('vote failed')
         success: (data)->
           if data.success
-            ignore_dif = 0
-            if watch_btn.next().hasClass('bold')
-              ignore_dif = -1
-            watch_btn.attr('class', 'post_ignore bold')
-            watch_btn.next().removeClass('bold')
-            watch_btn.parent().parent().find('.post_watch_stat').text("watches: #{watch_stat+1}")
-            watch_btn.parent().data('uservote', 'watch')
-            watch_btn.parent().data('watchstat', watch_stat+1)
-            watch_btn.parent().parent().find('.post_ignore_stat').text("ignores: #{ignore_stat+ignore_dif}")
-            watch_btn.parent().data('ignorestat', ignore_stat+ignore_dif)
+            update_items_for_watch(id)
           else
             alert('vote failed')
         complete: ->
@@ -211,14 +220,13 @@ post_watch = (watch_btn)->
             e.stopPropagation()
             post_ignore($(this))
 
+
 post_ignore = (ignore_btn)->
   ignore_btn.unbind()
   ignore_btn.prev().unbind()
   id = ignore_btn.parent().data().id
   uservote = ignore_btn.parent().data().uservote
   isposter = ignore_btn.parent().data().isposter
-  watch_stat = ignore_btn.parent().data().watchstat
-  ignore_stat = ignore_btn.parent().data().ignorestat
   if uservote!='ignore' and !isposter
     auth_token = $("#auth_user_info").data().token
     user_id = $("#auth_user_info").data().id
@@ -238,16 +246,7 @@ post_ignore = (ignore_btn)->
           alert('vote failed')
         success:(data)->
           if data.success
-            watch_dif = 0
-            if ignore_btn.prev().hasClass('bold')
-              watch_dif = -1
-            ignore_btn.attr('class', 'post_ignore bold')
-            ignore_btn.prev().removeClass('bold')
-            ignore_btn.parent().parent().find('.post_ignore_stat').text("ignores: #{ignore_stat+1}")
-            ignore_btn.parent().data('uservote', 'ignore')
-            ignore_btn.parent().data('ignorestat', ignore_stat+1)
-            ignore_btn.parent().parent().find('.post_watch_stat').text("watches: #{watch_stat+watch_dif}")
-            ignore_btn.parent().data('watchstat', watch_stat+watch_dif)
+            update_items_for_ignore(id)
           else
             alert('vote failed')
         complete: ->
@@ -257,3 +256,38 @@ post_ignore = (ignore_btn)->
           ignore_btn.on click: (e)->
             e.stopPropagation()
             post_ignore($(this))
+
+
+update_items_for_watch = (post_id)->
+  for post in $(".#{post_id}")
+    watch_btn = $(post).find('.post_watch:first')
+    ignore_dif = 0
+    if watch_btn.next().hasClass('bold')
+      ignore_dif = -1
+    watch_stat = watch_btn.parent().data().watchstat
+    ignore_stat = watch_btn.parent().data().ignorestat
+    watch_btn.attr('class', 'post_watch bold')
+    watch_btn.next().removeClass('bold')
+    watch_btn.parent().parent().find('.post_watch_stat').text("watches: #{watch_stat+1}")
+    watch_btn.parent().data('uservote', 'watch')
+    watch_btn.parent().data('watchstat', watch_stat+1)
+    watch_btn.parent().parent().find('.post_ignore_stat').text("ignores: #{ignore_stat+ignore_dif}")
+    watch_btn.parent().data('ignorestat', ignore_stat+ignore_dif)
+
+
+update_items_for_ignore = (post_id)->
+  for post in $(".#{post_id}")
+    ignore_btn = $(post).find('.post_ignore:first')
+    watch_dif = 0
+    if ignore_btn.prev().hasClass('bold')
+      watch_dif = -1
+    watch_stat = ignore_btn.parent().data().watchstat
+    ignore_stat = ignore_btn.parent().data().ignorestat
+    ignore_btn.attr('class', 'post_ignore bold')
+    ignore_btn.prev().removeClass('bold')
+    ignore_btn.parent().parent().find('.post_ignore_stat').text("ignores: #{ignore_stat+1}")
+    ignore_btn.parent().data('uservote', 'ignore')
+    ignore_btn.parent().data('ignorestat', ignore_stat+1)
+    ignore_btn.parent().parent().find('.post_watch_stat').text("watches: #{watch_stat+watch_dif}")
+    ignore_btn.parent().data('watchstat', watch_stat+watch_dif)
+

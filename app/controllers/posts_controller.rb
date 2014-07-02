@@ -21,11 +21,23 @@ class PostsController < ApplicationController
   end
 
   def index
+    @feed = 'index'
     if authenticated?
       @posts = HTTParty.get("#{api_url}/posts/index", 
         :headers => { 'Authorization' => "Token token=#{current_user['auth_token']}" })
     else
       @posts = HTTParty.get("#{api_url}/posts/index")
+    end
+  end
+
+  def index_followed
+    @feed = 'followed'
+    if authenticated?
+      @posts = HTTParty.get("#{api_url}/posts/index_followed_posts", 
+        :headers => { 'Authorization' => "Token token=#{current_user['auth_token']}" })
+      render 'index'
+    else
+      redirect_to root_path
     end
   end
 
