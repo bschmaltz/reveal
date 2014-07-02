@@ -1,5 +1,5 @@
-#api_url="https://reveal-api.herokuapp.com"
-api_url="http://localhost:3001"
+api_url="https://reveal-api.herokuapp.com"
+#api_url="http://localhost:3001"
 feed = 'index'
 $ ->
   if $('.posts')[0]
