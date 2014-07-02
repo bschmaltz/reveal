@@ -1,5 +1,5 @@
-<li class="post post_listing <%= post['id'] %>" data-id="<%= post['id'] %>">
-  <div class="post_vote" data-uservote="<%= post['current_user_vote'] %>" data-id="<%= post['id'] %>" data-isposter="<%= post['current_user_is_poster'] %>" data-watchstat="<%= post['watch_stat'] %>" data-ignorestat="<%= post['ignore_stat'] %>" data-itemtype="<%=  post['item_type'] %>" data-voteid="<%=  post['vote_id'] %>">
+<li class="post post_listing <%= post['id'] %>" data-id="<%= post['id'] %>" data-itemtype="<%=  post['item_type'] %>" data-voteid="<%=  post['vote_id'] %>">
+  <div class="post_vote" data-uservote="<%= post['current_user_vote'] %>" data-id="<%= post['id'] %>" data-isposter="<%= post['current_user_is_poster'] %>" data-watchstat="<%= post['watch_stat'] %>" data-ignorestat="<%= post['ignore_stat'] %>">
     <% if post['current_user_vote']=='watch' %>
       <div class="post_watch bold">WATCH</div>
       <div class="post_ignore">IGNORE</div>

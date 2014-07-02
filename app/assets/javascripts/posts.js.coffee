@@ -1,5 +1,5 @@
-api_url="https://reveal-api.herokuapp.com"
-#api_url="http://localhost:3001"
+#api_url="https://reveal-api.herokuapp.com"
+api_url="http://localhost:3001"
 feed = 'index'
 $ ->
   if $('.posts')[0]
@@ -72,8 +72,8 @@ load_posts = ->
           for post in data
             username = ""
             post_vote = ""
-            post_data = "data-id=#{post.id}"
-            vote_data="data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\" data-itemtype=\"#{post.item_type}\" data-voteid=\"#{post.vote_id}\""
+            post_data = "data-id=#{post.id}  data-itemtype=\"#{post.item_type}\" data-voteid=\"#{post.vote_id}\""
+            vote_data="data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\""
             post_avatar = "<div class=\"post_avatar_div\"><img src=\""+post.avatar_thumb+"\" class=\"post_avatar_image\"></div>"
             watch_info = ""
             if !post.revealed and post.current_user_is_poster
