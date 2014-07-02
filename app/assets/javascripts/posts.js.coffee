@@ -1,4 +1,5 @@
 api_url="https://reveal-api.herokuapp.com"
+#api_url="http://localhost:3001"
 
 $ ->
   $(document).scroll ->
@@ -111,6 +112,9 @@ reveal_post = (link)->
       beforeSend: (request) ->
         request.setRequestHeader("Authorization", "Token token=#{auth_token}")
       error: ->
+        link.on click: (e)->
+          e.stopPropagation()
+          reveal_post($(this))
         alert('reveal fail')
       success: (data) ->
         link.text('hide')
@@ -131,6 +135,9 @@ hide_post = (link)->
       beforeSend: (request) ->
         request.setRequestHeader("Authorization", "Token token=#{auth_token}")
       error: ->
+        link.on click: (e)->
+          e.stopPropagation()
+          hide_post($(this))
         alert('hide fail')
       success: (data) ->
         link.text('reveal')

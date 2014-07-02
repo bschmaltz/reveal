@@ -1,8 +1,19 @@
 <h1><%= @user['username']%></h1>
 <img src="<%= @user['avatar_medium'] %>" id="user_avatar">
+<br />
 <% if @user['username']==current_user['username'] %>
-  <br />
   <%= link_to 'Update Profile', "/users/settings/#{current_user['id']}" %>
+<% end %>
+<div id="follow_stats">
+  <span id="follower_stat" data-follower="<%= @user['follower_stat'] %>"><%= @user['follower_stat'] %> followers</span> | 
+  <span id="followed_stat" data-followed="<%= @user['followed_stat'] %>"><%= @user['followed_stat'] %> followed</span>
+</div>
+<% if authenticated? and @user['username']!=current_user['username'] %>
+  <% if !@user['current_user_follows'] %>
+    <div id="follow_user" data-id="<%=@user['id']%>">follow</div>
+  <% else %>
+    <div id="unfollow_user" data-id="<%=@user['id']%>">following</div>
+  <% end %>
 <% end %>
 <br />
 <%if @user['id']==current_user['id'] %>

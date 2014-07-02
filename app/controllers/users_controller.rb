@@ -37,14 +37,15 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user =  HTTParty.get("#{api_url}/users/#{params[:id]}")
     if authenticated?
+      @user =  HTTParty.get("#{api_url}/users/#{params[:id]}",
+        :headers => { 'Authorization' => "Token token=#{current_user['auth_token']}" })
       @user_posts = HTTParty.get("#{api_url}/posts/index_for_user/#{params[:id]}",
         :headers => { 'Authorization' => "Token token=#{current_user['auth_token']}" })
     else
+      @user =  HTTParty.get("#{api_url}/users/#{params[:id]}")
       @user_posts = HTTParty.get("#{api_url}/posts/index_for_user/#{params[:id]}")
     end
-    p "@user=#{@user.inspect}"
   end
 
   def settings

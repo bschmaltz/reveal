@@ -1,4 +1,5 @@
 api_url="https://reveal-api.herokuapp.com"
+#api_url="http://localhost:3001"
 file = null
 $ ->
   jQuery("#avatar_browser").on change: ->
@@ -16,6 +17,82 @@ $ ->
       upload_avatar_from_browser()
     else
       upload_avatar_from_url()
+
+  $('#follow_user').on click: (e)->
+    e.stopPropagation()
+    follow_user($(this))
+
+  $('#unfollow_user').on click: (e)->
+    e.stopPropagation()
+    unfollow_user($(this))
+
+
+follow_user = (follow_btn)->
+  follow_btn.unbind()
+  followed_user_id = follow_btn.data().id
+  auth_token = $("#auth_user_info").data().token
+  user_id = $("#auth_user_info").data().id
+  $.ajax "#{api_url}/followers",
+    type: 'POST'
+    contentType: 'application/json'
+    dataType: "json"
+    data: JSON.stringify({follower: {user_id: user_id, followed_user_id: followed_user_id}})
+    beforeSend: (request) ->
+      request.setRequestHeader("Authorization", "Token token=#{auth_token}")
+    error: ->
+      follow_btn.on click: (e)->
+        e.stopPropagation()
+        follow_user($(this))
+      alert('follow fail')
+    success: (data) ->
+      if data.success
+        follow_btn.attr('id', 'unfollow_user')
+        follow_btn.text('following')
+        follower_stat = $('#follower_stat').data().follower+1
+        $('#follower_stat').data('follower', follower_stat)
+        $('#follower_stat').text("#{follower_stat} followers")
+        follow_btn.on click: (e)->
+          e.stopPropagation()
+          unfollow_user($(this))
+      else
+        follow_btn.on click: (e)->
+          e.stopPropagation()
+          follow_user($(this))
+        alert('follow fail')
+
+
+unfollow_user = (unfollow_btn)->
+  unfollow_btn.unbind()
+  unfollowed_user_id = unfollow_btn.data().id
+  user_id = $("#auth_user_info").data().id
+  auth_token = $("#auth_user_info").data().token
+  $.ajax "#{api_url}/followers",
+    type: 'DELETE'
+    contentType: 'application/json'
+    dataType: "json"
+    data: JSON.stringify({follower: {user_id: user_id, followed_user_id: unfollowed_user_id}})
+    beforeSend: (request) ->
+      request.setRequestHeader("Authorization", "Token token=#{auth_token}")
+    error: ->
+      unfollow_btn.on click: (e)->
+        e.stopPropagation()
+        unfollow_user($(this))
+      alert('unfollow fail')
+    success: (data) ->
+      if data.success
+        unfollow_btn.attr('id', 'follow_user')
+        unfollow_btn.text('follow')
+        follower_stat = $('#follower_stat').data().follower-1
+        $('#follower_stat').data('follower', follower_stat)
+        $('#follower_stat').text("#{follower_stat} followers")
+        unfollow_btn.on click: (e)->
+          e.stopPropagation()
+          follow_user($(this))
+      else
+        follow_btn.on click: (e)->
+          e.stopPropagation()
+          unfollow_user($(this))
+        alert('unfollow fail')
 
 
 upload_avatar_from_browser = ->
