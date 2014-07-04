@@ -1,11 +1,14 @@
 api_url="https://reveal-api.herokuapp.com"
 #api_url="http://localhost:3001"
-feed = 'index'
+post_page = ''
+location = null
 $ ->
-  if $('.posts')[0]
-    feed = $('.posts').data().feed
+  if $('#page_info').data().controller == 'posts'
+    post_page = $('#page_info').data().action
+    if post_page == 'index_location' or post_page == 'new'
+      setup_location()
   $(document).scroll ->
-    load_posts()
+    try_scroll_load_posts()
   rebind_posts()
 
 
@@ -41,66 +44,74 @@ view_post = (post)->
   window.location = "/posts/#{id}"
 
 
-load_posts = ->
-  last_post = $('.post').last()
+try_scroll_load_posts = ->
   if element_in_scroll($('#feed_end'))
-    $(document).unbind('scroll')
-    url=''
-    if feed=='index'
-      url = "#{api_url}/posts/index/#{last_post.data().id}"
+    load_posts()
+
+load_posts = ->
+  $(document).unbind('scroll')
+  last_post = $('.post').last()
+  url=''
+  if post_page=='index'
+    url = "#{api_url}/posts/index/#{last_post.data().id}"
+  else if post_page=='index_followed'
+    if last_post.data().itemtype=='watch'
+      url="#{api_url}/posts/index_followed_posts?last_vote_id=#{last_post.data().voteid}"
     else
-      if last_post.data().itemtype=='watch'
-        url="#{api_url}/posts/index_followed_posts?last_vote_id=#{last_post.data().voteid}"
+      url="#{api_url}/posts/index_followed_posts?last_post_id=#{last_post.data().id}"
+  else
+    if $('.post')[0]
+      url = "#{api_url}/posts/index_by_location?last_post_id=#{last_post.data().id}&latitude=#{location.latitude}&longitude=#{location.longitude}"
+    else
+      url = "#{api_url}/posts/index_by_location?latitude=#{location.latitude}&longitude=#{location.longitude}"
+  auth_token = $("#auth_user_info").data().token
+  user_id = $("#auth_user_info").data().id
+  $.ajax url,
+    type: 'GET'
+    contentType: 'application/json'
+    beforeSend: (request) ->
+      $('.ajax_loader').show()
+      request.setRequestHeader("Authorization", "Token token=#{auth_token}")
+    error: ->
+      $('.ajax_loader').hide()
+      alert('posts failed to load')
+    success: (data) ->
+      $('.ajax_loader').hide()
+      if data.length == 0
+        $('.posts').after('<div id="end_of_posts">You\'ve reached the end of the feed</div>')
       else
-        url="#{api_url}/posts/index_followed_posts?last_post_id=#{last_post.data().id}"
-    auth_token = $("#auth_user_info").data().token
-    user_id = $("#auth_user_info").data().id
-    $.ajax url,
-      type: 'GET'
-      contentType: 'application/json'
-      beforeSend: (request) ->
-        $('.ajax_loader').show()
-        request.setRequestHeader("Authorization", "Token token=#{auth_token}")
-      error: ->
-        $('.ajax_loader').hide()
-        alert('posts failed to load')
-      success: (data) ->
-        $('.ajax_loader').hide()
-        if data.length == 0
-          last_post.parent().after('<div id="end_of_posts">You\'ve reached the end of the feed</div>')
-        else
-          for post in data
-            username = ""
-            post_vote = ""
-            post_data = "data-id=#{post.id}  data-itemtype=\"#{post.item_type}\" data-voteid=\"#{post.vote_id}\""
-            vote_data="data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\""
-            post_avatar = "<div class=\"post_avatar_div\"><img src=\""+post.avatar_thumb+"\" class=\"post_avatar_image\"></div>"
-            watch_info = ""
-            if !post.revealed and post.current_user_is_poster
-              username = "<div class=\"post_username\">user: Anonymous (Me)</div>"
-            else if !post.revealed
-              username = "<div class=\"post_username\">user: Anonymous</div>"
-            else
-              username ="<div class=\"post_username\">user: <a class=\"post_username_link\" href=\"/users/#{post.user_id}\">#{post.username}</a></div>"
-              post_avatar = "<div class=\"post_avatar_div\"><a class=\"post_avatar_link\" href=\"/users/#{post.user_id}\"><img src=\""+post.avatar_thumb+"\" class=\"post_avatar_image\"></a></div>"
+        for post in data
+          username = ""
+          post_vote = ""
+          post_data = "data-id=#{post.id}  data-itemtype=\"#{post.item_type}\" data-voteid=\"#{post.vote_id}\""
+          vote_data="data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\""
+          post_avatar = "<div class=\"post_avatar_div\"><img src=\""+post.avatar_thumb+"\" class=\"post_avatar_image\"></div>"
+          watch_info = ""
+          if !post.revealed and post.current_user_is_poster
+            username = "<div class=\"post_username\">user: Anonymous (Me)</div>"
+          else if !post.revealed
+            username = "<div class=\"post_username\">user: Anonymous</div>"
+          else
+            username ="<div class=\"post_username\">user: <a class=\"post_username_link\" href=\"/users/#{post.user_id}\">#{post.username}</a></div>"
+            post_avatar = "<div class=\"post_avatar_div\"><a class=\"post_avatar_link\" href=\"/users/#{post.user_id}\"><img src=\""+post.avatar_thumb+"\" class=\"post_avatar_image\"></a></div>"
 
-            if post.current_user_is_poster
+          if post.current_user_is_poster
+            post_vote = "<div class=\"post_vote\" #{vote_data}><div class=\"post_watch\">WATCH</div><div class=\"post_ignore\">IGNORE</div></div>"
+          else
+            if post.current_user_vote == 'watch'
+              post_vote = "<div class=\"post_vote\" #{vote_data}><div class=\"post_watch bold\">WATCH</div><div class=\"post_ignore\">IGNORE</div></div>"
+            else if post.current_user_vote == 'ignore'
+              post_vote = "<div class=\"post_vote\" #{vote_data}><div class=\"post_watch\">WATCH</div><div class=\"post_ignore bold\">IGNORE</div></div>"
+            else
               post_vote = "<div class=\"post_vote\" #{vote_data}><div class=\"post_watch\">WATCH</div><div class=\"post_ignore\">IGNORE</div></div>"
-            else
-              if post.current_user_vote == 'watch'
-                post_vote = "<div class=\"post_vote\" #{vote_data}><div class=\"post_watch bold\">WATCH</div><div class=\"post_ignore\">IGNORE</div></div>"
-              else if post.current_user_vote == 'ignore'
-                post_vote = "<div class=\"post_vote\" #{vote_data}><div class=\"post_watch\">WATCH</div><div class=\"post_ignore bold\">IGNORE</div></div>"
-              else
-                post_vote = "<div class=\"post_vote\" #{vote_data}><div class=\"post_watch\">WATCH</div><div class=\"post_ignore\">IGNORE</div></div>"
 
-            if post.item_type == 'watch'
-              watch_info = "<div class=\"watch_info\">Watched by <a class=\"watch_user_link\" href=\"users/#{post.followed_user_id}\">#{post.followed_username}</a></div>"
+          if post.item_type == 'watch'
+            watch_info = "<div class=\"watch_info\">Watched by <a class=\"watch_user_link\" href=\"users/#{post.followed_user_id}\">#{post.followed_username}</a></div>"
 
-            $('.post').last().after("<li #{post_data} class=\"post post_listing #{post.id}\">#{post_vote}#{username}#{post_avatar}<div class=\"post_content\">says: #{post.content}</div><div class=\"post_watch_stat\">watches: #{post.watch_stat}</div><div class=\"post_ignore_stat\">ignores: #{post.ignore_stat}</div>#{watch_info}</li>")
-          rebind_posts()
-          $(document).scroll ->
-            load_posts()
+          $('.posts').append("<li #{post_data} class=\"post post_listing #{post.id}\">#{post_vote}#{username}#{post_avatar}<div class=\"post_content\">says: #{post.content}</div><div class=\"post_watch_stat\">watches: #{post.watch_stat}</div><div class=\"post_ignore_stat\">ignores: #{post.ignore_stat}</div>#{watch_info}</li>")
+        rebind_posts()
+        $(document).scroll ->
+          try_scroll_load_posts()
 
 
 element_in_scroll = (elem)->
@@ -291,3 +302,25 @@ update_items_for_ignore = (post_id)->
     ignore_btn.parent().parent().find('.post_watch_stat').text("watches: #{watch_stat+watch_dif}")
     ignore_btn.parent().data('watchstat', watch_stat+watch_dif)
 
+
+setup_location = ->
+  if navigator.geolocation
+    navigator.geolocation.getCurrentPosition(geo_success, geo_error)
+  else
+    alert("Browser does not support geolocation")
+
+geo_success = (data)->
+  location = data.coords
+  if post_page == 'new'
+    $('#latitude').val(location.latitude)
+    $('#longitude').val(location.longitude)
+  else if post_page == 'index_location'
+    load_posts()
+
+geo_error = (error)->
+  code = error.code
+  switch code
+    when 0 then alert("Geolocation Error: Unknown error")
+    when 1 then alert("Geolocation Error: Permission denied")
+    when 2 then alert("Geolocation Error: Position unavailable")
+    else alert("Geolocation Error: Timed out")

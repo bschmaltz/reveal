@@ -7,6 +7,8 @@ class PostsController < ApplicationController
     result = HTTParty.post("#{api_url}/posts", 
       :body => { :post => {:user_id => current_user['id'], 
                   :content => params[:content],
+                  :latitude => params[:latitude],
+                  :longitude => params[:longitude],
                   :revealed => false}
                }.to_json,
       :headers => { 'Content-Type' => 'application/json',
@@ -21,7 +23,6 @@ class PostsController < ApplicationController
   end
 
   def index
-    @feed = 'index'
     if authenticated?
       @posts = HTTParty.get("#{api_url}/posts/index", 
         :headers => { 'Authorization' => "Token token=#{current_user['auth_token']}" })
@@ -31,7 +32,6 @@ class PostsController < ApplicationController
   end
 
   def index_followed
-    @feed = 'followed'
     if authenticated?
       @posts = HTTParty.get("#{api_url}/posts/index_followed_posts", 
         :headers => { 'Authorization' => "Token token=#{current_user['auth_token']}" })
@@ -39,6 +39,11 @@ class PostsController < ApplicationController
     else
       redirect_to root_path
     end
+  end
+
+  def index_location
+    @posts = []
+    render 'index'
   end
 
   def show

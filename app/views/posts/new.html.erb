@@ -3,5 +3,7 @@ Post Creator!!!!
 <%= form_tag("/posts", method: "post") do %>
   <%= label_tag(:content, "Write something...") %>
   <%= text_area_tag(:content) %>
+  <%= hidden_field_tag :latitude, nil %>
+  <%= hidden_field_tag :longitude, nil %>
   <%= submit_tag("Post!") %>
 <%end%>
