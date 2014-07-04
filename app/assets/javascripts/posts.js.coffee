@@ -2,11 +2,15 @@ api_url="https://reveal-api.herokuapp.com"
 #api_url="http://localhost:3001"
 post_page = ''
 location = null
+popular_page_num=0
+popular_orig_request_time=null
 $ ->
   if $('#page_info').data().controller == 'posts'
     post_page = $('#page_info').data().action
     if post_page == 'index_location' or post_page == 'new'
       setup_location()
+    if post_page == 'index_popular'
+      popular_orig_request_time= $('.posts').eq(0).data().requesttime
   $(document).scroll ->
     try_scroll_load_posts()
   rebind_posts()
@@ -59,11 +63,14 @@ load_posts = ->
       url="#{api_url}/posts/index_followed_posts?last_vote_id=#{last_post.data().voteid}"
     else
       url="#{api_url}/posts/index_followed_posts?last_post_id=#{last_post.data().id}"
-  else
+  else if post_page=='index_location'
     if $('.post')[0]
       url = "#{api_url}/posts/index_by_location?last_post_id=#{last_post.data().id}&latitude=#{location.latitude}&longitude=#{location.longitude}"
     else
       url = "#{api_url}/posts/index_by_location?latitude=#{location.latitude}&longitude=#{location.longitude}"
+  else
+    popular_page_num=popular_page_num+1
+    url = "#{api_url}/posts/index_popular?page=#{popular_page_num}&orig_request_time=#{popular_orig_request_time}"
   auth_token = $("#auth_user_info").data().token
   user_id = $("#auth_user_info").data().id
   $.ajax url,

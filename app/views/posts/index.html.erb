@@ -1,4 +1,8 @@
-<ul class="posts">
+<% if @posts.empty? %>
+  <ul class="posts" data-requesttime="<%= DateTime.now %>">
+<% else %>
+  <ul class="posts" data-requesttime="<%= @posts[0]['orig_request_time'] %>">
+<% end %>
   <% @posts.each do |post| %>
     <%= render 'posts/post', :post => post %>
   <% end %>

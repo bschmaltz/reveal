@@ -31,6 +31,17 @@ class PostsController < ApplicationController
     end
   end
 
+  def index_popular
+    if authenticated?
+      @posts = HTTParty.get("#{api_url}/posts/index_popular", 
+        :headers => { 'Authorization' => "Token token=#{current_user['auth_token']}" })
+    else
+      @posts = HTTParty.get("#{api_url}/posts/index_popular")
+    end
+    puts "@@@@@@@@@@@@@@@@@@@@@posts=#{@posts.inspect}"
+    render 'index'
+  end
+
   def index_followed
     if authenticated?
       @posts = HTTParty.get("#{api_url}/posts/index_followed_posts", 

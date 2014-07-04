@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get '/posts/new', to: 'posts#new', as: :new_post
   get '/posts', to: 'posts#index'
   get '/posts_followed', to: 'posts#index_followed'
+  get '/posts_popular', to: 'posts#index_popular'
   get '/posts_location', to: 'posts#index_location'
   get '/posts/:id', to: 'posts#show'
   post '/posts', to: 'posts#create'
