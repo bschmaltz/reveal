@@ -14,4 +14,6 @@ Rails.application.routes.draw do
   get '/posts_location', to: 'posts#index_location'
   get '/posts/:id', to: 'posts#show'
   post '/posts', to: 'posts#create'
+
+  get '/reveal_notifications', to: 'reveal_notifications#index'
 end

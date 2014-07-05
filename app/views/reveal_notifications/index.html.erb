@@ -1,0 +1,12 @@
+New notifications (these will be marked as old now that you've viewed them - refresh to see)
+<ul class="new_notifications">  
+  <% @notifications['new_notifications'].each do |notification| %>
+    <%= render 'reveal_notifications/new_notification', :notification => notification['new_notification'] %>
+  <% end %>
+</ul>
+Old notifications
+<ul class="old_notifications">
+  <% @notifications['old_notifications'].each do |notification| %>
+    <%= render 'reveal_notifications/old_notification', :notification => notification['old_notification'] %>
+  <% end %>
+</ul>
