@@ -9,6 +9,8 @@ gem 'sass-rails', '~> 4.0.3'
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
+
+gem 'foundation-icons-sass-rails'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby
 
@@ -39,5 +41,6 @@ gem 'spring',        group: :development
 
 gem 'httparty'
 gem 'rails_12factor', group: :production
+gem 'foundation-rails'
 
 ruby "2.1.2"

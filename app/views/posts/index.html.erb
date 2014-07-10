@@ -1,11 +1,38 @@
 <% if @posts.empty? %>
-  <ul class="posts" data-requesttime="<%= DateTime.now %>">
+  <ul class="row posts no-bullet" data-requesttime="<%= DateTime.now %>">
 <% else %>
-  <ul class="posts" data-requesttime="<%= @posts[0]['orig_request_time'] %>">
+  <ul class="row posts no-bullet" data-requesttime="<%= @posts[0]['orig_request_time'] %>">
 <% end %>
   <% @posts.each do |post| %>
     <%= render 'posts/post', :post => post %>
   <% end %>
 </ul>
-<%= image_tag("ajax-loader.gif", class: "ajax_loader hidden") %>
-<div class="feed_end"></div>
+<%= image_tag("ajax-loader.gif", class: "row ajax_loader hidden") %>
+<div class="row feed_end"></div>
+
+<div class="icon-bar three-up bottom-bar">
+  <% if action_name == 'index_popular' %>
+    <a href="/posts_popular" class="item popular_active">
+  <% else %>
+    <a href="/posts_popular" class="item">
+  <% end %>
+    <i class="fi-star"></i>
+    <label>Popular</label>
+  </a>
+  <% if action_name == 'index_location' %>
+    <a href="/posts_location" class="item location_active">
+  <% else %>
+    <a href="/posts_location" class="item">
+  <% end %>
+    <i class="fi-marker"></i>
+    <label>Local</label>
+  </a>
+  <% if action_name == 'index_followed' %>
+    <a href="/posts_followed" class="item followed_active">
+  <% else %>
+    <a href="/posts_followed" class="item">
+  <% end %>
+    <i class="fi-torsos-all"></i>
+    <label>Followed</label>
+  </a>
+</div>

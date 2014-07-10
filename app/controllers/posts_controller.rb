@@ -38,7 +38,6 @@ class PostsController < ApplicationController
     else
       @posts = HTTParty.get("#{api_url}/posts/index_popular")
     end
-    puts "@@@@@@@@@@@@@@@@@@@@@posts=#{@posts.inspect}"
     render 'index'
   end
 

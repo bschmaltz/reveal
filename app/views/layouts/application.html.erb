@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title><%= full_title(yield(:title)) %></title>
-    <%= stylesheet_link_tag "application", media: "all" %>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title><%= content_for?(:title) ? yield(:title) : "Reveal" %></title>
+
+    <%= stylesheet_link_tag    "application", media: "all" %>
+    <%= javascript_include_tag "vendor/modernizr" %>
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
   </head>
+
   <body>
     <% if authenticated? %>
       <span id="auth_user_info" data-id="<%= session[:user]['id'] %>" data-username="<%=session[:user]['username']%>" data-token="<%= session[:user]['auth_token'] %>" class="hidden"></span>
@@ -13,13 +19,10 @@
       <span id="auth_user_info" data-id="" data-username="" data-token="" class="hidden"></span>
     <% end %>
     <span id="page_info" data-controller="<%= controller_name %>" data-action="<%= action_name %>" class="hidden"></span>
-
-    <%= render 'layouts/header' %>
-    <div class="container">
-      <% flash.each do |key, value| %>
-        <div class="alert alert-<%= key %>"><%= value %></div>
-      <% end %>
-      <%= yield %>
-    </div>
+    <% if authenticated? %>
+      <%= render 'layouts/body_auth' %>
+    <% else %>
+      <%= render 'layouts/body_unauth' %>
+    <% end %>
   </body>
 </html>

@@ -1,0 +1,113 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ *= require foundation_and_overrides
+
+ */
+ $grayMediumLight: #eaeaea;
+ .off-canvas-fixed {
+  -webkit-transition: -webkit-transform 500ms ease;
+  transition: transform 500ms ease;
+}
+
+.move-right > .off-canvas-fixed {
+  height: 100%;
+  -webkit-transform: translate3d(15.625rem, 0, 0);
+  transform: translate3d(15.625rem, 0, 0);
+}
+
+.left-off-canvas-menu {
+  -webkit-transform: none;
+  transform: none;
+  margin-left: -15.625rem;
+  height: 100vh;
+}
+
+.bottom-bar{
+position: fixed;
+bottom: 0px;
+width: 100%;
+margin-bottom: 0px;
+}
+.hidden{
+  display: none; 
+}
+.empty{
+  display: hidden;
+}
+.menu_icon{
+  padding-right: 10px;
+  font-size: 20px;
+}
+
+.post_vote{
+  color: #8A8A8A;
+}
+.bold{
+  color: blue;
+  font-weight: bold;
+}
+#settings_user_avatar_div{
+  height: 300px;
+  width: 300px;
+}
+#settings_user_avatar{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+#end_of_posts{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.feed_end{
+  height: 100px;
+}
+.post{
+  border-bottom: 1px solid;
+  border-color: $grayMediumLight;
+  padding-bottom: 1%;
+  padding-top: 1%;
+}
+.notification{
+  color: #808080;
+  padding-left: 16px;
+  text-decoration: none;
+  :hover{
+    color:#808080;
+  }
+  :visited{
+    color: #808080;
+  }
+}
+.post_avatar_div{
+  padding-top: 3px;
+}
+.post_ignore{
+  margin-left: 15px;
+}
+
+.popular_active{
+  padding-bottom: -5px;
+  border-bottom: 5px solid;
+}
+.location_active{
+  padding-bottom: -5px;
+  border-bottom: 5px solid;
+}
+.followed_active{
+  padding-bottom: -5px;
+  border-bottom: 5px solid;
+}

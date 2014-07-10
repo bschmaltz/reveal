@@ -1,0 +1,38 @@
+<div class="off-canvas-wrap" data-offcanvas>
+  <div class="inner-wrap">
+    <nav class="tab-bar">
+
+      <section class="middle tab-bar-section">
+        <h1 class="title">Reveal</h1>
+      </section>
+
+      <section class="right-small">
+        <a class="right-off-canvas-toggle menu-icon" href="#"><span></span></a>
+      </section>
+    </nav>
+
+    <aside class="right-off-canvas-menu">
+      <ul class="off-canvas-list">
+        <li><label>Menu</label></li>
+        <li><a href="/"><i class="menu_icon fi-unlock"></i>Sign Up/In</a></li>
+        <% if controller_name == 'posts' and action_name !='new' %>
+          <li class="active"><a href="/posts_popular"><i class="menu_icon fi-list-thumbnails"></i>Feeds</a></li>
+        <% else %>
+          <li><a href="/posts_popular"><i class="menu_icon fi-list-thumbnails"></i>Feeds</a></li>
+        <% end %>
+      </ul>
+    </aside>
+
+    <section class="main-section">
+      <div class="container">
+        <% flash.each do |key, value| %>
+          <div data-alert class="alert-box <%= key %>"><%= value %></div>
+        <% end %>
+        <%= yield %>
+      </div>
+    </section>
+
+  <a class="exit-off-canvas"></a>
+
+  </div>
+</div>

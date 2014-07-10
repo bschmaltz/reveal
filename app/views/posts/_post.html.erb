@@ -1,27 +1,5 @@
-<li class="post post_listing <%= post['id'] %>" data-id="<%= post['id'] %>" data-itemtype="<%=  post['item_type'] %>" data-voteid="<%=  post['vote_id'] %>">
-  <div class="post_vote" data-uservote="<%= post['current_user_vote'] %>" data-id="<%= post['id'] %>" data-isposter="<%= post['current_user_is_poster'] %>" data-watchstat="<%= post['watch_stat'] %>" data-ignorestat="<%= post['ignore_stat'] %>">
-    <% if post['current_user_vote']=='watch' %>
-      <div class="post_watch bold">WATCH</div>
-      <div class="post_ignore">IGNORE</div>
-    <% elsif post['current_user_vote']=='ignore' %>
-      <div class="post_watch">WATCH</div>
-      <div class="post_ignore bold">IGNORE</div>
-    <% else %>
-      <div class="post_watch">WATCH</div>
-      <div class="post_ignore">IGNORE</div>
-    <% end %>
-  </div>
-  <div class="post_username">
-    <% if post['revealed'] %>
-      user: <a class="post_username_link" href="<%="/users/#{post['user_id']}"%>"><%= post['username'] %></a>
-    <% else %>
-      user: Anonymous 
-    <% end %>
-    <% if post['current_user_is_poster'] and !post['revealed'] %>
-      (Me)
-    <% end %>
-  </div>
-  <div class="post_avatar_div">
+<li class="row post post_listing <%= post['id'] %>" data-id="<%= post['id'] %>" data-itemtype="<%=  post['item_type'] %>" data-voteid="<%=  post['vote_id'] %>">
+  <div class="small-2 column post_avatar_div">
     <% if post['revealed'] %>
       <a class="post_avatar_link" href="<%="/users/#{post['user_id']}"%>">
     <% end %>
@@ -30,12 +8,34 @@
       </a>
     <% end %>
   </div>
-  <div class="post_content">says: <%= post['content'] %></div>
-  <div class="post_watch_stat">watches: <%= post['watch_stat'] %></div>
-  <div class="post_ignore_stat">ignores: <%= post['ignore_stat'] %></div>
-  <% if post['item_type']=='watch' %>
-    <div class="watch_info">
-      Watched by <a class="watch_user_link" href="/users/<%= post['followed_user_id'] %>"><%= post['followed_username'] %></a>
+  <div class="small-10 column non-avatar-content">
+    <div class="row post_username">
+      <% if post['revealed'] %>
+        <a class="post_username_link" href="<%="/users/#{post['user_id']}"%>"><%= post['username'] %></a>
+      <% else %>
+        Anonymous 
+      <% end %>
+      <% if post['current_user_is_poster'] and !post['revealed'] %>
+        (Me)
+      <% end %>
     </div>
-  <% end %>
+    <div class="row post_content"><%= post['content'] %></div>
+    <div class="row post_vote" data-uservote="<%= post['current_user_vote'] %>" data-id="<%= post['id'] %>" data-isposter="<%= post['current_user_is_poster'] %>" data-watchstat="<%= post['watch_stat'] %>" data-ignorestat="<%= post['ignore_stat'] %>">
+      <% if post['current_user_vote']=='watch' %>
+        <span class="post_watch bold"><i class="fi-eye"></i> <%= post['watch_stat'] %></span>
+        <span class="post_ignore"><i class="fi-dislike"></i> <%= post['ignore_stat'] %></span>
+      <% elsif post['current_user_vote']=='ignore' %>
+        <span class="post_watch"><i class="fi-eye"></i> <%= post['watch_stat'] %></span>
+        <span class="post_ignore bold"><i class="fi-dislike"></i> <%= post['ignore_stat'] %></span>
+      <% else %>
+        <span class="post_watch"><i class="fi-eye"></i> <%= post['watch_stat'] %></span>
+        <span class="post_ignore"><i class="fi-dislike"></i> <%= post['ignore_stat'] %></span>
+      <% end %>
+    </div>
+    <% if post['item_type']=='watch' %>
+      <div class="row watch_info">
+        Watched by <a class="row watch_user_link" href="/users/<%= post['followed_user_id'] %>"><%= post['followed_username'] %></a>
+      </div>
+    <% end %>
+  </div>
 </li>
