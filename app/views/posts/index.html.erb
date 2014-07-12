@@ -7,8 +7,8 @@
     <%= render 'posts/post', :post => post %>
   <% end %>
 </ul>
-<%= image_tag("ajax-loader.gif", class: "row ajax_loader hidden") %>
 <div class="row feed_end"></div>
+<%= image_tag("ajax-loader.gif", class: "row ajax_loader") %>
 
 <div class="icon-bar three-up bottom-bar">
   <% if action_name == 'index_popular' %>

@@ -5,6 +5,7 @@ location = null
 popular_page_num=0
 popular_orig_request_time=null
 $ ->
+  $('.ajax_loader').hide()
   if $('#page_info').data().controller == 'posts'
     post_page = $('#page_info').data().action
     if post_page == 'index_location' or post_page == 'new'
