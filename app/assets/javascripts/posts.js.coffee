@@ -78,11 +78,13 @@ load_posts = ->
       request.setRequestHeader("Authorization", "Token token=#{auth_token}")
     error: ->
       $('.ajax_loader').hide()
+      $(document).scroll ->
+        try_scroll_load_posts()
       alert('posts failed to load')
     success: (data) ->
       $('.ajax_loader').hide()
       if data.length == 0
-        $('.posts').after('<div id="end_of_posts">You\'ve reached the end of the feed</div>')
+        $('.posts').after('<div id="row end_of_posts">You\'ve reached the end of the feed</div>')
       else
         for post in data
           username = ""
@@ -130,7 +132,7 @@ element_in_scroll = (elem)->
   
   totalHeight = document.body.offsetHeight
   visibleHeight = document.documentElement.clientHeight
-  
+  console.log("totalHeight=#{totalHeight} currentScroll=#{currentScroll} visibleHeight=#{visibleHeight}")
   totalHeight <= currentScroll + visibleHeight and ($('.feed_end')[0])
 
 reveal_switch = (switch_input)->

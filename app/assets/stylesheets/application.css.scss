@@ -30,7 +30,6 @@
   width: 50px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: -100px;
 }
 .empty{
   display: hidden;
@@ -135,12 +134,29 @@
  }
 
 /* User */
-#settings_user_avatar_div{
-  height: 300px;
-  width: 300px;
+#follow_stats{
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
-#settings_user_avatar{
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+#user-info-username{
+  border-bottom: 2px solid;
+}
+.user-header{
+  margin-top: 20px;
+}
+.avatar-div{
+}
+#user_avatar{
+  height: 100%;
+}
+.user-posts{
+  margin-top: 40px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.tabs-content{
+  background-color: #f8f8f8;
+  .post{
+    border-color: #DDD !important;
+  }
 }

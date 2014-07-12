@@ -1,42 +1,56 @@
-<h1><%= @user['username']%></h1>
-<img src="<%= @user['avatar_medium'] %>" id="user_avatar">
-<br />
-<% if @user['username']==current_user['username'] %>
-  <%= link_to 'Update Profile', "/users/settings/#{current_user['id']}" %>
-<% end %>
-<div id="follow_stats">
-  <span id="follower_stat" data-follower="<%= @user['follower_stat'] %>"><%= @user['follower_stat'] %> followers</span> | 
-  <span id="followed_stat" data-followed="<%= @user['followed_stat'] %>"><%= @user['followed_stat'] %> followed</span>
-</div>
-<% if authenticated? and @user['username']!=current_user['username'] %>
-  <% if !@user['current_user_follows'] %>
-    <div id="follow_user" data-id="<%=@user['id']%>">follow</div>
-  <% else %>
-    <div id="unfollow_user" data-id="<%=@user['id']%>">following</div>
-  <% end %>
-<% end %>
-<br />
-<%if @user['id']==current_user['id'] %>
-  <div id="hidden-posts">
-    <h2>Hidden Posts</h2>
-    <ul class="user-hidden-posts no-bullet">
-      <% @user_posts.each do |post| %>
-        <% if !post['revealed'] %>
-          <%= render 'posts/post', :post => post %>
-        <% end %>
-      <% end %>
-    </ul>
+<div class="row user-header">
+  <div class="small-4 column avatar-div">
+    <img src="<%= @user['avatar_medium'] %>" id="user_avatar">
   </div>
-  <br />
-  <br />
-<% end %>
-<div id="revealed-posts">
-  <h2>Public Posts</h2>
-  <ul class="user-revealed-posts no-bullet">
-    <% @user_posts.each do |post| %>
-      <% if post['revealed'] %>
-        <%= render 'posts/post', :post => post %>
+  <div id="user-info" class="small-8 column">
+    <div id="username-title">
+      <h3 id="user-info-username"><%= @user['username']%></h3>
+    </div>
+    <div id="follow_stats">
+      <span id="follower_stat" data-follower="<%= @user['follower_stat'] %>"><%= @user['follower_stat'] %> followers</span> | 
+      <span id="followed_stat" data-followed="<%= @user['followed_stat'] %>"><%= @user['followed_stat'] %> followed</span>
+    </div> 
+    <% if authenticated? and @user['username']==current_user['username'] %>
+      <div id="update-user">
+        <%= link_to 'Update Profile', "/users/settings/#{current_user['id']}" %>
+      </div>
+    <% end %>
+    <% if authenticated? and @user['username']!=current_user['username'] %>
+      <% if !@user['current_user_follows'] %>
+        <button id="follow_user" data-id="<%=@user['id']%>" class="button tiny round">follow</button>
+      <% else %>
+        <button id="unfollow_user" data-id="<%=@user['id']%>" class="button tiny round">following</button>
       <% end %>
     <% end %>
+  </div>
+</div>
+<div class="user-posts">
+  <ul class="tabs" data-tab>
+    <li class="tab-title active"><a href="#panel2-1">Public</a></li>
+    <% if authenticated? and @user['username']==current_user['username'] %>
+      <li class="tab-title"><a href="#panel2-2">Hidden</a></li>
+    <% end %>
   </ul>
+  <div class="tabs-content">
+    <div class="content active" id="panel2-1">
+      <ul class="user-revealed-posts no-bullet">
+        <% @user_posts.each do |post| %>
+          <% if post['revealed'] %>
+            <%= render 'posts/post', :post => post %>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+    <% if authenticated? and @user['username']==current_user['username'] %>
+      <div class="content" id="panel2-2">
+        <ul class="user-hidden-posts no-bullet">
+          <% @user_posts.each do |post| %>
+            <% if !post['revealed'] %>
+              <%= render 'posts/post', :post => post %>
+            <% end %>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
 </div>
