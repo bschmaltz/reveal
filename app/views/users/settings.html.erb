@@ -1,14 +1,22 @@
-Edit Your Profile Picture
-<div id="settings_user_avatar_div">
-  <% if !@user['avatar_medium'].empty? %>
-    <img src="<%= @user['avatar_medium'] %>" id="settings_user_avatar">
-  <% end %>
+<div id="profile-pic-update-div">
+  <div class="row">
+    <h4 id="profile-pic-update-header" class="small-12 column">Edit Your Profile Picture</h4>
+  </div>
+  <div class="row">
+    <div id="profile-pic-update-img" class="small-12 column">
+      <% if !@user['avatar_medium'].empty? %>
+        <img src="<%= @user['avatar_medium'] %>" id="settings_user_avatar">
+      <% end %>
+      <%= image_tag("ajax-loader.gif", class: "ajax_loader hidden") %>
+    </div>
+  </div>
+  <div class="row">
+    <div id="profile-pic-update-form" class="small-12 column">
+      <form id="avatar_uploader">
+        <input type="file" name="avatar" id="avatar_browser">
+        <input type="text" name="remote_url" id="avatar_remote_url" placeholder="Or use a remote url...">
+        <button class="button tiny no-focus" type="submit">Upload</button>
+      </form>
+    </div>
+  </div>
 </div>
-
-<%= image_tag("ajax-loader.gif", class: "ajax_loader hidden") %>
-
-<form id="avatar_uploader">
-  <input type="file" name="avatar" id="avatar_browser">
-  <input type="text" name="remote_url" id="avatar_remote_url">
-  <input type="submit" value="Upload">
-</form>

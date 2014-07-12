@@ -43,6 +43,7 @@ follow_user = (follow_btn)->
       follow_btn.on click: (e)->
         e.stopPropagation()
         follow_user($(this))
+      follow_btn.blur()
       alert('follow fail')
     success: (data) ->
       if data.success
@@ -51,10 +52,12 @@ follow_user = (follow_btn)->
         follower_stat = $('#follower_stat').data().follower+1
         $('#follower_stat').data('follower', follower_stat)
         $('#follower_stat').text("#{follower_stat} followers")
+        follow_btn.blur()
         follow_btn.on click: (e)->
           e.stopPropagation()
           unfollow_user($(this))
       else
+        follow_btn.blur()
         follow_btn.on click: (e)->
           e.stopPropagation()
           follow_user($(this))
@@ -77,6 +80,7 @@ unfollow_user = (unfollow_btn)->
       unfollow_btn.on click: (e)->
         e.stopPropagation()
         unfollow_user($(this))
+      unfollow_btn.blur()
       alert('unfollow fail')
     success: (data) ->
       if data.success
@@ -85,11 +89,13 @@ unfollow_user = (unfollow_btn)->
         follower_stat = $('#follower_stat').data().follower-1
         $('#follower_stat').data('follower', follower_stat)
         $('#follower_stat').text("#{follower_stat} followers")
+        unfollow_btn.blur()
         unfollow_btn.on click: (e)->
           e.stopPropagation()
           follow_user($(this))
       else
-        follow_btn.on click: (e)->
+        unfollow_btn.blur()
+        unfollow_btn.on click: (e)->
           e.stopPropagation()
           unfollow_user($(this))
         alert('unfollow fail')
