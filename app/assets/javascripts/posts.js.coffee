@@ -21,6 +21,9 @@ rebind_posts = ->
     e.preventDefault()
     e.stopPropagation()
     reveal_switch($(this))
+
+  $('#reveal-switch-input').on submit: (e)->
+    e.preventDefault()
     
   $('.delete_post').on click: (e)->
     e.stopPropagation()
