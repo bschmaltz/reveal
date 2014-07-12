@@ -43,17 +43,17 @@
       </div>
       <div class="small-3 column">
         <%if @post['current_user_is_poster'] and @post['item_type']!='watch' %>
-          <div class="row switch small reveal-switch-div">
+          <form id="reveal-switch-form" action="">
+          <div class="row reveal-switch-div" onclick="">
             <% if @post['revealed']%>
-              <span id="reveal-switch-span">Public</span>
-              <input id="reveal-switch-input" class="post_control" data-id="<%=@post['id']%>" data-revealed="<%=@post['revealed']%>" checked type="checkbox">
-              <label id="reveal-switch-label" for="reveal-switch-input"></label>
+              <span id="reveal-switch-span" onclick="">Public</span>
+              <input id="reveal-switch-input" class="post_control" data-id="<%=@post['id']%>" data-revealed="<%=@post['revealed']%>" checked type="checkbox" value="" name="" onclick="">
             <% else %>
-              <span id="reveal-switch-span">Hidden</span>
-              <input id="reveal-switch-input" class="post_control" data-id="<%=@post['id']%>" data-revealed="<%=@post['revealed']%>" type="checkbox">
-              <label id="reveal-switch-label" for="reveal-switch-input"></label>
+              <span id="reveal-switch-span" onclick="">Public</span>
+              <input id="reveal-switch-input" class="post_control" data-id="<%=@post['id']%>" data-revealed="<%=@post['revealed']%>" type="checkbox" value="" name="" onclick="">
             <% end %>
           </div>
+          </form>
         <% end %>
       </div>
     </div>

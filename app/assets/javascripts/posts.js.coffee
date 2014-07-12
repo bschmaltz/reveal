@@ -18,12 +18,8 @@ $ ->
 
 rebind_posts = ->
   $('#reveal-switch-input').on click: (e)->
-    e.preventDefault()
     e.stopPropagation()
     reveal_switch($(this))
-
-  $('#reveal-switch-input').on submit: (e)->
-    e.preventDefault()
     
   $('.delete_post').on click: (e)->
     e.stopPropagation()
@@ -192,7 +188,7 @@ hide_post = (switch_input)->
         alert('hide fail')
       success: (data) ->
         if data.success
-          $('#reveal-switch-span').text('Hidden')
+          $('#reveal-switch-span').text('Public')
           $('#reveal-switch-input').prop("checked", false)
           switch_input.data('revealed', false)
           $('.post_username').html('Anonymous (Me)')
