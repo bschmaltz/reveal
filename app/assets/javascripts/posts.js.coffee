@@ -18,6 +18,13 @@ $ ->
 
 
 rebind_posts = ->
+  $('#reveal-switch-input').unbind()
+  $('.delete_post').unbind()
+  $('.post_watch').unbind()
+  $('.post_ignore').unbind()
+  $('.post_listing').unbind()
+
+
   $('#reveal-switch-input').on click: (e)->
     e.stopPropagation()
     reveal_switch($(this))
