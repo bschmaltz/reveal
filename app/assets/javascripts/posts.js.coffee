@@ -18,7 +18,6 @@ $ ->
 
 rebind_posts = ->
   $('#reveal-switch-input').on click: (e)->
-    e.preventDefault()
     e.stopPropagation()
     reveal_switch($(this))
     
