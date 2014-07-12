@@ -12,8 +12,9 @@ $ ->
       setup_location()
     if post_page == 'index_popular'
       popular_orig_request_time= $('.posts').eq(0).data().requesttime
-  $(document).scroll ->
-    try_scroll_load_posts()
+  if $('.feed_end')[0]
+    $(document).scroll ->
+      try_scroll_load_posts()
   rebind_posts()
 
 
@@ -52,8 +53,8 @@ view_post = (post)->
   window.location = "/posts/#{id}"
 
 
-try_scroll_load_posts = ->
-  if element_in_scroll($('#feed_end'))
+try_scroll_load_posts = ->  
+  if element_in_scroll($('#feed_ender')) and !$('.end_found')[0]
     load_posts()
 
 load_posts = ->
@@ -91,7 +92,7 @@ load_posts = ->
     success: (data) ->
       $('.ajax_loader').hide()
       if data.length == 0
-        $('.posts').after('<div id="row end_of_posts">You\'ve reached the end of the feed</div>')
+        $('.posts').after('<div id="end_of_posts" class="end_found">You\'ve reached the end of the feed</div>')
       else
         for post in data
           username = ""
@@ -123,24 +124,14 @@ load_posts = ->
 
           $('.posts').append("<li #{post_data} class=\"row post post_listing #{post.id}\">#{post_avatar}<div class=\"small-9 column non-avatar-content\">#{username}<div class=\"row post_content\">#{post.content}</div>#{post_vote}</div></li>")
         rebind_posts()
-        $(document).scroll ->
-          try_scroll_load_posts()
+      $(document).scroll ->
+        try_scroll_load_posts()
 
 
 element_in_scroll = (elem)->
-  totalHeight = 0
-  currentScroll = 0
-  visibleHeight = 0
-  
-  if (document.documentElement.scrollTop)
-    currentScroll = document.documentElement.scrollTop
-  else
-    currentScroll = document.body.scrollTop
-  
-  totalHeight = document.body.offsetHeight
-  visibleHeight = document.documentElement.clientHeight
-  console.log("totalHeight=#{totalHeight} currentScroll=#{currentScroll} visibleHeight=#{visibleHeight}")
-  totalHeight <= currentScroll + visibleHeight and ($('.feed_end')[0])
+  scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop
+  scrollTop + window.innerHeight >= document.body.scrollHeight
+
 
 reveal_switch = (switch_input)->
   if switch_input.data().revealed
