@@ -18,6 +18,7 @@ $ ->
 
 rebind_posts = ->
   $('#reveal-switch-input').on click: (e)->
+    e.preventDefault()
     e.stopPropagation()
     reveal_switch($(this))
     
@@ -155,7 +156,8 @@ reveal_post = (switch_input)->
         alert('reveal fail')
       success: (data) ->
         if data.success
-          $('#reveal-switch-span').text('Hidden')
+          $('#reveal-switch-span').text('Public')
+          $('#reveal-switch-input').prop("checked", true)
           switch_input.data('revealed', true)
           $('.post_username').html("<a class=\"post_username_link\" href=\"/users/#{data.user_id}\">#{data.username}</a>")
           $('.post_avatar_div').html("<a class=\"post_avatar_link\" href=\"/users/#{data.user_id}\"><img src=#{data.avatar_thumb} class=\"post_avatar_image\"></a>")
@@ -187,7 +189,8 @@ hide_post = (switch_input)->
         alert('hide fail')
       success: (data) ->
         if data.success
-          $('#reveal-switch-span').text('Public')
+          $('#reveal-switch-span').text('Hidden')
+          $('#reveal-switch-input').prop("checked", false)
           switch_input.data('revealed', false)
           $('.post_username').html('Anonymous (Me)')
           $('.post_avatar_div').html("<img src=#{data.avatar_thumb} class=\"post_avatar_image\">")

@@ -46,11 +46,11 @@
           <div class="row switch small reveal-switch-div">
             <% if @post['revealed']%>
               <span id="reveal-switch-span">Public</span>
-              <input id="reveal-switch-input" class="post_control" data-id="<%=@post['id']%>" data-revealed="<%=@post['revealed']%>" checked type="radio">
+              <input id="reveal-switch-input" class="post_control" data-id="<%=@post['id']%>" data-revealed="<%=@post['revealed']%>" checked type="checkbox">
               <label id="reveal-switch-label" for="reveal-switch-input"></label>
             <% else %>
               <span id="reveal-switch-span">Hidden</span>
-              <input id="reveal-switch-input" class="post_control" data-id="<%=@post['id']%>" data-revealed="<%=@post['revealed']%>" type="radio">
+              <input id="reveal-switch-input" class="post_control" data-id="<%=@post['id']%>" data-revealed="<%=@post['revealed']%>" type="checkbox">
               <label id="reveal-switch-label" for="reveal-switch-input"></label>
             <% end %>
           </div>
