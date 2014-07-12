@@ -224,12 +224,13 @@ delete_post = (link)->
         alert('delete fail')
       success: (data) ->
         if data.success
-          $('.post').fadeOut("slow", delete_redirect())
+          $('.post').hide()
+          delete_redirect()
         else
           alert('delete fail')
 
 delete_redirect = ->
-  window.location = "/posts_location"
+  window.location = document.referrer
 
 post_watch = (watch_btn)->
   watch_btn.unbind()
