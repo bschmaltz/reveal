@@ -53,6 +53,8 @@
 /* Posts */
 .posts{
   list-style-type: none;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .bottom-bar{
   position: fixed;
@@ -95,7 +97,9 @@
   color: #444;
   }
 }
-
+.show-post{
+  margin: 0 !important;
+}
 .popular_active{
   padding-bottom: -5px;
   border-bottom: 5px solid;

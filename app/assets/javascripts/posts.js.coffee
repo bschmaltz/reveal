@@ -89,7 +89,7 @@ load_posts = ->
           post_vote = ""
           post_data = "data-id=#{post.id}  data-itemtype=\"#{post.item_type}\" data-voteid=\"#{post.vote_id}\""
           vote_data = "data-uservote=\"#{post.current_user_vote}\" data-id=\"#{post.id}\" data-isposter=\"#{post.current_user_is_poster}\" data-watchstat=\"#{post.watch_stat}\" data-ignorestat=\"#{post.ignore_stat}\""
-          post_avatar = "<div class=\"small-2 column post_avatar_div\"><a class=\"post_avatar_link\" href=\"/users/#{post.user_id}\"><img src=\""+post.avatar_thumb+"\" class=\"post_avatar_image\"></a></div>"
+          post_avatar = "<div class=\"small-3 column post_avatar_div\"><a class=\"post_avatar_link\" href=\"/users/#{post.user_id}\"><img src=\""+post.avatar_thumb+"\" class=\"post_avatar_image\"></a></div>"
           watch_info = ""
 
           if !post.revealed and post.current_user_is_poster
@@ -112,7 +112,7 @@ load_posts = ->
           if post.item_type == 'watch'
             watch_info = "<div class=\"row watch_info\">Watched by <a class=\"watch_user_link\" href=\"users/#{post.followed_user_id}\">#{post.followed_username}</a></div>"
 
-          $('.posts').append("<li #{post_data} class=\"row post post_listing #{post.id}\">#{post_avatar}<div class=\"small-10 column non-avatar-content\">#{username}<div class=\"row post_content\">#{post.content}</div>#{post_vote}</div></li>")
+          $('.posts').append("<li #{post_data} class=\"row post post_listing #{post.id}\">#{post_avatar}<div class=\"small-9 column non-avatar-content\">#{username}<div class=\"row post_content\">#{post.content}</div>#{post_vote}</div></li>")
         rebind_posts()
         $(document).scroll ->
           try_scroll_load_posts()

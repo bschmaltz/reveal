@@ -1,5 +1,5 @@
 <li class="row post post_listing <%= post['id'] %>" data-id="<%= post['id'] %>" data-itemtype="<%=  post['item_type'] %>" data-voteid="<%=  post['vote_id'] %>">
-  <div class="small-2 column post_avatar_div">
+  <div class="small-3 column post_avatar_div">
     <% if post['revealed'] %>
       <a class="post_avatar_link" href="<%="/users/#{post['user_id']}"%>">
     <% end %>
@@ -8,7 +8,7 @@
       </a>
     <% end %>
   </div>
-  <div class="small-10 column non-avatar-content">
+  <div class="small-9 column non-avatar-content">
     <div class="row post_username">
       <% if post['revealed'] %>
         <a class="post_username_link" href="<%="/users/#{post['user_id']}"%>"><%= post['username'] %></a>
