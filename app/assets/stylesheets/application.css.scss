@@ -18,6 +18,9 @@
  $grayMediumLight: #eaeaea;
 
 /*application*/
+.container{
+  height: 100vh;
+}
 .hidden{
   display: none; 
 }
@@ -26,7 +29,6 @@
 }
 .menu_icon{
   padding-right: 10px;
-  font-size: 20px;
 }
 .notification{
   color: #808080;
