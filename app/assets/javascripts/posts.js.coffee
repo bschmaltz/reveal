@@ -17,13 +17,10 @@ $ ->
 
 
 rebind_posts = ->
-  $('.reveal_post').on click: (e)->
+  $('#reveal-switch-input').on click: (e)->
+    e.preventDefault()
     e.stopPropagation()
-    reveal_post($(this))
-    
-  $('.hide_post').on click: (e)->
-    e.stopPropagation()
-    hide_post($(this))
+    reveal_switch($(this))
     
   $('.delete_post').on click: (e)->
     e.stopPropagation()
@@ -136,10 +133,15 @@ element_in_scroll = (elem)->
   
   totalHeight <= currentScroll + visibleHeight and ($('.feed_end')[0])
 
+reveal_switch = (switch_input)->
+  if switch_input.data().revealed
+    hide_post(switch_input)
+  else
+    reveal_post(switch_input)
 
-reveal_post = (link)->
-  link.unbind()
-  id = link.data().id
+reveal_post = (switch_input)->
+  switch_input.unbind()
+  id = switch_input.data().id
   auth_token = $("#auth_user_info").data().token
   $.ajax "#{api_url}/posts/reveal/#{id}",
       type: 'PUT'
@@ -147,23 +149,31 @@ reveal_post = (link)->
       beforeSend: (request) ->
         request.setRequestHeader("Authorization", "Token token=#{auth_token}")
       error: ->
-        link.on click: (e)->
+        $('.reveal-switch-input').on click: (e)->
+          e.preventDefault()
           e.stopPropagation()
-          reveal_post($(this))
+          reveal_switch($(this))
         alert('reveal fail')
       success: (data) ->
-        link.text('hide')
-        link.attr('class', 'post_control hide_post')
-        link.on click: (e)->
-          e.stopPropagation()
-          hide_post($(this))
-        link.parent().find('.post_username').text(data.username)
-        link.parent().find('.post_avatar_image').attr('src', data.avatar_thumb)
+        if data.success
+          $('#reveal-switch-span').text('Hidden')
+          switch_input.data('revealed', true)
+          $('.post_username').html("<a class=\"post_username_link\" href=\"/users/#{data.user_id}\">#{data.username}</a>")
+          $('.post_avatar_div').html("<a class=\"post_avatar_link\" href=\"/users/#{data.user_id}\"><img src=#{data.avatar_thumb} class=\"post_avatar_image\"></a>")
+          switch_input.on click: (e)->
+            e.preventDefault()
+            e.stopPropagation()
+            hide_post($(this))
+        else
+          switch_input.on click: (e)->
+            e.preventDefault()
+            e.stopPropagation()
+            reveal_post($(this))
+          alert('reveal fail')
 
-
-hide_post = (link)->
-  link.unbind()
-  id = link.data().id
+hide_post = (switch_input)->
+  switch_input.unbind()
+  id = switch_input.data().id
   auth_token = $("#auth_user_info").data().token
   $.ajax "#{api_url}/posts/hide/#{id}",
       type: 'PUT'
@@ -171,19 +181,27 @@ hide_post = (link)->
       beforeSend: (request) ->
         request.setRequestHeader("Authorization", "Token token=#{auth_token}")
       error: ->
-        link.on click: (e)->
+        $('.reveal-switch-input').on click: (e)->
+          e.preventDefault()
           e.stopPropagation()
-          hide_post($(this))
+          reveal_switch($(this))
         alert('hide fail')
       success: (data) ->
-        link.text('reveal')
-        link.attr('class', 'post_control reveal_post')
-        link.on click: (e)->
-          e.stopPropagation()
-          reveal_post($(this))
-        link.parent().find('.post_username').text('Anonymous (Me)')
-        link.parent().find('.post_avatar_image').attr('src', data.avatar_thumb)
-
+        if data.success
+          $('#reveal-switch-span').text('Public')
+          switch_input.data('revealed', false)
+          $('.post_username').html('Anonymous (Me)')
+          $('.post_avatar_div').html("<img src=#{data.avatar_thumb} class=\"post_avatar_image\">")
+          switch_input.on click: (e)->
+            e.preventDefault()
+            e.stopPropagation()
+            reveal_post($(this))
+        else
+          switch_input.on click: (e)->
+            e.preventDefault()
+            e.stopPropagation()
+            hide_post($(this))
+          alert('hide fail')
 
 delete_post = (link)->
   link.unbind()
@@ -200,7 +218,14 @@ delete_post = (link)->
           e.stopPropagation()
           delete_post($(this))
         alert('delete fail')
+      success: (data) ->
+        if data.success
+          $('.post').fadeOut("slow", delete_redirect())
+        else
+          alert('delete fail')
 
+delete_redirect = ->
+  window.location = "/posts_location"
 
 post_watch = (watch_btn)->
   watch_btn.unbind()

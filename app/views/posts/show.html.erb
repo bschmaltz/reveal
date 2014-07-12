@@ -1,27 +1,6 @@
-<div class="show_post">
-  <div class="post_vote" data-uservote="<%= @post['current_user_vote'] %>" data-id="<%= @post['id'] %>" data-isposter="<%= @post['current_user_is_poster'] %>" data-watchstat="<%= @post['watch_stat'] %>" data-ignorestat="<%= @post['ignore_stat'] %>">
-    <% if @post['current_user_vote']=='watch' %>
-      <div class="post_watch bold">WATCH</div>
-      <div class="post_ignore">IGNORE</div>
-    <% elsif @post['current_user_vote']=='ignore' %>
-      <div class="post_watch">WATCH</div>
-      <div class="post_ignore bold">IGNORE</div>
-    <% else %>
-      <div class="post_watch">WATCH</div>
-      <div class="post_ignore">IGNORE</div>
-    <% end %>
-  </div>
-  <div class="post_username">
-    <% if @post['revealed'] %>
-      user: <a class="post_username_link" href="<%="/users/#{@post['user_id']}"%>"><%= @post['username'] %></a>
-    <% else %>
-      user: Anonymous 
-    <% end %>
-    <% if @post['current_user_is_poster'] and !@post['revealed'] %>
-      (Me)
-    <% end %>
-  </div>
-  <div class="post_avatar_div">
+<ul class="posts">
+<div class="row post post_listing <%= @post['id'] %>" data-id="<%= @post['id'] %>" data-itemtype="<%=  @post['item_type'] %>" data-voteid="<%=  @post['vote_id'] %>">
+  <div class="small-3 column post_avatar_div">
     <% if @post['revealed'] %>
       <a class="post_avatar_link" href="<%="/users/#{@post['user_id']}"%>">
     <% end %>
@@ -30,15 +9,54 @@
       </a>
     <% end %>
   </div>
-  <div class="post_content">says: <%= @post['content'] %></div>
-  <div class="post_watch_stat">watches: <%= @post['watch_stat'] %></div>
-  <div class="post_ignore_stat">ignores: <%= @post['ignore_stat'] %></div>
-  <%if @post['current_user_is_poster'] %>
-    <% if @post['revealed']%>
-      <div class="post_control hide_post" data-id="<%=@post['id']%>">hide</div>
-    <% else %>
-      <div class="post_control reveal_post" data-id="<%=@post['id']%>">reveal</div>
-    <% end %>
-    <div class="post_control delete_post" data-id="<%=@post['id']%>">delete</div>
-  <% end %>
+  <div class="small-9 column non-avatar-content">
+    <div class="row">
+      <div class="small-9 column">
+        <div class="row post_username">
+          <% if @post['revealed'] %>
+            <a class="post_username_link" href="<%="/users/#{@post['user_id']}"%>"><%= @post['username'] %></a>
+          <% else %>
+            Anonymous<% if @post['current_user_is_poster'] %> (Me)<% end %>
+          <% end %>
+        </div>
+        <div class="row post_content"><%= @post['content'] %></div>
+        <div class="row post_vote" data-uservote="<%= @post['current_user_vote'] %>" data-id="<%= @post['id'] %>" data-isposter="<%= @post['current_user_is_poster'] %>" data-watchstat="<%= @post['watch_stat'] %>" data-ignorestat="<%= @post['ignore_stat'] %>">
+          <% if @post['current_user_vote']=='watch' %>
+            <span class="post_watch bold"><i class="fi-eye"></i> <%= @post['watch_stat'] %></span>
+            <span class="post_ignore"><i class="fi-dislike"></i> <%= @post['ignore_stat'] %></span>
+          <% elsif @post['current_user_vote']=='ignore' %>
+            <span class="post_watch"><i class="fi-eye"></i> <%= @post['watch_stat'] %></span>
+            <span class="post_ignore bold"><i class="fi-dislike"></i> <%= @post['ignore_stat'] %></span>
+          <% else %>
+            <span class="post_watch"><i class="fi-eye"></i> <%= @post['watch_stat'] %></span>
+            <span class="post_ignore"><i class="fi-dislike"></i> <%= @post['ignore_stat'] %></span>
+          <% end %>
+          <%if @post['current_user_is_poster'] and @post['item_type']!='watch' %>
+            <span class="post_control delete_post" data-id="<%=@post['id']%>">delete</span>
+          <% end %>
+        </div>
+        <% if @post['item_type']=='watch' %>
+          <div class="row watch_info">
+            Watched by <a class="row watch_user_link" href="/users/<%= @post['followed_user_id'] %>"><%= @post['followed_username'] %></a>
+          </div>
+        <% end %>
+      </div>
+      <div class="small-3 column">
+        <%if @post['current_user_is_poster'] and @post['item_type']!='watch' %>
+          <div class="row switch small reveal-switch-div">
+            <% if @post['revealed']%>
+              <span id="reveal-switch-span">Public</span>
+              <input id="reveal-switch-input" class="post_control" data-id="<%=@post['id']%>" data-revealed="<%=@post['revealed']%>" checked type="radio">
+              <label id="reveal-switch-label" for="reveal-switch-input"></label>
+            <% else %>
+              <span id="reveal-switch-span">Hidden</span>
+              <input id="reveal-switch-input" class="post_control" data-id="<%=@post['id']%>" data-revealed="<%=@post['revealed']%>" type="radio">
+              <label id="reveal-switch-label" for="reveal-switch-input"></label>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
+</ul>

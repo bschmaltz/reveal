@@ -13,10 +13,7 @@
       <% if post['revealed'] %>
         <a class="post_username_link" href="<%="/users/#{post['user_id']}"%>"><%= post['username'] %></a>
       <% else %>
-        Anonymous 
-      <% end %>
-      <% if post['current_user_is_poster'] and !post['revealed'] %>
-        (Me)
+        Anonymous<% if post['current_user_is_poster'] %> (Me)<% end %>
       <% end %>
     </div>
     <div class="row post_content"><%= post['content'] %></div>
