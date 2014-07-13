@@ -17,3 +17,7 @@
 //= require_tree .
 
 $(function(){ $(document).foundation(); });
+
+$('document').ready(function(){
+  $('.right-off-canvas-menu').css('bottom', $('.inner-wrap').height()-window.innerHeight)
+});
