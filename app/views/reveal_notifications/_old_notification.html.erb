@@ -1,4 +1,4 @@
-<li class="old_notification">
-  <%= notification['post_username'] %> revealed:
+<li class="old_notification notification small-12 column" data-id="<%= notification['id'] %>" data-postid="<%= notification['post_id'] %>">
+  <a class="post_username_link" href="<%="/users/#{@post['user_id']}"%>"><%= @post['username'] %></a> revealed:
   <%= notification['post_content'] %>
 </li>

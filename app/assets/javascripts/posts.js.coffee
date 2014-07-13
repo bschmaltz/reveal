@@ -44,7 +44,7 @@ rebind_posts = ->
 
   $('.post_listing').on click: (e)->
     class_clicked = $(e.target).attr('class')
-    if class_clicked!='post_avatar_image' and class_clicked!='post_username_link' and class_clicked!='watch_user_link'
+    if class_clicked!='post_avatar_image' and class_clicked!='post_username_link' and class_clicked!='watch_user_link' and class_clicked!='post_control' and class_clicked!='vote'
       view_post($(this))
 
 
@@ -189,7 +189,7 @@ hide_post = (switch_input)->
         alert('hide fail')
       success: (data) ->
         if data.success
-          $('#reveal-switch-span').text('Public')
+          $('#reveal-switch-span').text('Hidden')
           $('#reveal-switch-input').prop("checked", false)
           switch_input.data('revealed', false)
           $('.post_username').html('Anonymous (Me)')
