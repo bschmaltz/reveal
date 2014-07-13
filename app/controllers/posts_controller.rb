@@ -15,7 +15,7 @@ class PostsController < ApplicationController
         'Authorization' => "Token token=#{current_user['auth_token']}" } )
     if result['success']
       flash[:success] = "Post created!"
-      redirect_to action: 'index'
+      redirect_to action: 'index_location'
     else
       flash[:error] = "Error creating post. Try again."
       redirect_to action: 'new'
