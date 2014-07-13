@@ -12,7 +12,7 @@ class UsersController < ApplicationController
       if result['success']
         flash[:success] = "Welcome to Reveal!"
         set_current_user(result)
-        redirect_to root_path
+        redirect_to '/posts_popular'
       else
         flash[:error] = "Invalid registration"
         redirect_to root_path
@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     if result['success']
       flash[:success] = "Welcome to Reveal!"
       set_current_user(result)
-      redirect_to root_path
+      redirect_to '/posts_popular'
     else
       flash[:error] = "Invalid username/password"
       redirect_to root_path

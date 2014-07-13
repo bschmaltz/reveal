@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   def home
     if authenticated?
-      redirect_to '/posts'
+      redirect_to '/posts_popular'
     end
   end
 
