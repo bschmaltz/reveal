@@ -31,7 +31,7 @@
     </div>
     <% if post['item_type']=='watch' %>
       <div class="row watch_info">
-        Watched by <a class="row watch_user_link" href="/users/<%= post['followed_user_id'] %>"><%= post['followed_username'] %></a>
+        Watched by <a class="watch_user_link" href="/users/<%= post['followed_user_id'] %>"><%= post['followed_username'] %></a>
       </div>
     <% end %>
   </div>

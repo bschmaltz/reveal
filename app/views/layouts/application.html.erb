@@ -14,9 +14,9 @@
 
   <body>
     <% if authenticated? %>
-      <span id="auth_user_info" data-id="<%= session[:user]['id'] %>" data-username="<%=session[:user]['username']%>" data-token="<%= session[:user]['auth_token'] %>" class="hidden"></span>
+      <span id="auth_user_info" data-id="<%= session[:user]['id'] %>" data-username="<%=session[:user]['username']%>" data-token="<%= session[:user]['auth_token'] %>" data-authenticated="true" class="hidden"></span>
     <% else %>
-      <span id="auth_user_info" data-id="" data-username="" data-token="" class="hidden"></span>
+      <span id="auth_user_info" data-id="" data-username="" data-token="" data-authenticated="false" class="hidden"></span>
     <% end %>
     <span id="page_info" data-controller="<%= controller_name %>" data-action="<%= action_name %>" class="hidden"></span>
     <% if authenticated? %>

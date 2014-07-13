@@ -198,3 +198,20 @@
 .old-notification:hover{
   background-color: rgba(128,128,128,0.25);
 }
+.notification-icon{
+  color: #808080;
+  padding-left: 16px;
+  text-decoration: none;
+  :hover{
+    color:#808080;
+  }
+  :visited{
+    color: #808080;
+  }
+}
+.notification-icon-active{
+    color: #FFFFFF !important;
+    padding-left: 7px !important;
+    position: relative;
+    width: 50px;
+}
