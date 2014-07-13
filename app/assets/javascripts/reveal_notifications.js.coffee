@@ -3,5 +3,5 @@ api_url="https://reveal-api.herokuapp.com"
 $ ->
   $('.notification').on click: (e)->
     class_clicked = $(e.target).attr('class')
-    if class_clicked!='post_avatar_image' and class_clicked!='post_username_link' and class_clicked!='delete-notification'
-      window.location = "/posts/#{$(this).data().post_id}"
+    if class_clicked!='post_avatar_image' and class_clicked!='post_username_link'
+      window.location = "/posts/#{$(this).data().postid}"
