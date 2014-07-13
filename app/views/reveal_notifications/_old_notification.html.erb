@@ -1,4 +1,9 @@
-<li class="old_notification notification small-12 column" data-id="<%= notification['id'] %>" data-postid="<%= notification['post_id'] %>">
-  <a class="post_username_link" href="<%="/users/#{@post['user_id']}"%>"><%= @post['username'] %></a> revealed:
-  <%= notification['post_content'] %>
+<li class="old-notification notification row" data-postid="<%= notification['post_id'] %>">
+  <div class="small-3 column">
+    <a class="post_avatar_link" href="<%="/users/#{notification['post_user_id']}"%>"><img src="<%= notification['post_avatar'] %>" class="post_avatar_image"></a>
+  </div>
+  <div class="small-9 column">
+    <a class="post_username_link" href="<%="/users/#{notification['post_user_id']}"%>"><%= notification['post_username'] %></a> revealed: 
+    <div class="notification-content"><%= notification['post_content'] %></div>
+  </div>
 </li>

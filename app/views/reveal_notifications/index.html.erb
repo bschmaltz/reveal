@@ -1,9 +1,13 @@
-<div id="notifications-title" class="row"><h3 class="small-12 column">Notifications</h3></div>
-<ul id="notifications" class="no-bullet row">  
-  <% @notifications['new_notifications'].each do |notification| %>
-    <%= render 'reveal_notifications/new_notification', :notification => notification['new_notification'] %>
-  <% end %>
-  <% @notifications['old_notifications'].each do |notification| %>
-    <%= render 'reveal_notifications/old_notification', :notification => notification['old_notification'] %>
-  <% end %>
-</ul>
+<div id="notification-page">
+  <div id="notifications-title" class="row">
+    <h3 id="notifications-header" class="small-12 column">Notifications</h3>
+  </div>
+  <ul id="notifications" class="no-bullet">  
+    <% @notifications['new_notifications'].each do |notification| %>
+      <%= render 'reveal_notifications/new_notification', :notification => notification['new_notification'] %>
+    <% end %>
+    <% @notifications['old_notifications'].each do |notification| %>
+      <%= render 'reveal_notifications/old_notification', :notification => notification['old_notification'] %>
+    <% end %>
+  </ul>
+</div>
