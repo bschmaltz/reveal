@@ -11,7 +11,12 @@
 
 // Allows the use of rem-calc() or lower-bound() in your settings
 @import "foundation/functions";
-
+$blueGreen: #05614D;
+$lightActiveBlueGreen: #019776;
+$lightBlueGreen: #07785F;
+$darkBlueGreen: #004435;
+$menuFont: #fff;
+$sublinkOpacity: 0.9;
 // $experimental: true;
 
 // The default font-size is set to 100% of the browser style sheet (usually 16px)
@@ -60,7 +65,7 @@
 // $default-float: left;
 
 // We use these as default colors throughout
-// $primary-color: #008CBA;
+$primary-color: $blueGreen;
 // $secondary-color: #e7e7e7;
 // $alert-color: #f04124;
 // $success-color: #43AC6A;
@@ -680,7 +685,7 @@
 
 // $include-html-off-canvas-classes: $include-html-classes;
 
-// $tabbar-bg: #333;
+$tabbar-bg: $blueGreen;
 // $tabbar-height: rem-calc(45);
 // $tabbar-icon-width: $tabbar-height;
 // $tabbar-line-height: $tabbar-height;
@@ -699,19 +704,19 @@
 
 // Off Canvas Menu Variables
 // $off-canvas-width: rem-calc(250);
-// $off-canvas-bg: #333;
+$off-canvas-bg: $blueGreen;
 
 // Off Canvas Menu List Variables
 // $off-canvas-label-padding: 0.3rem rem-calc(15);
-// $off-canvas-label-color: #999;
+$off-canvas-label-color: $menuFont;
 // $off-canvas-label-text-transform: uppercase;
 // $off-canvas-label-font-weight: $font-weight-bold;
-// $off-canvas-label-bg: #444;
+$off-canvas-label-bg: $darkBlueGreen;
 // $off-canvas-label-border-top: 1px solid scale-color(#444, $lightness: 14%);
 // $off-canvas-label-border-bottom: none;
 // $off-canvas-label-margin:0;
 // $off-canvas-link-padding: rem-calc(10, 15);
-// $off-canvas-link-color: rgba(#fff, 0.7);
+$off-canvas-link-color: rgba(#fff, $sublinkOpacity);
 // $off-canvas-link-border-bottom: 1px solid scale-color($off-canvas-bg, $lightness: -25%);
 
 // Off Canvas Menu Icon Variables

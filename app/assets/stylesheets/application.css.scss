@@ -16,6 +16,10 @@
 
  */
  $grayMediumLight: #eaeaea;
+ $blueGreen: #05614D;
+ $lightActiveBlueGreen: #019776;
+ $lightBlueGreen: #07785F;
+ $darkBlueGreen: #004435;
 
 /*application*/
 .inner-wrap{
@@ -37,17 +41,6 @@
 }
 .menu_icon{
   padding-right: 10px;
-}
-.notification-icon{
-  color: #808080;
-  padding-left: 16px;
-  text-decoration: none;
-  :hover{
-    color:#808080;
-  }
-  :visited{
-    color: #808080;
-  }
 }
 #home-forms{
   margin: 20px;
@@ -75,8 +68,9 @@
 .post_vote{
   color: #8A8A8A;
 }
+
 .bold{
-  color: blue;
+  color: $lightActiveBlueGreen;
   font-weight: bold;
 }
 
@@ -104,7 +98,7 @@
   margin-left: 30px;
   :hover{
     text-decoration: underline;
-  color: #444;
+    color: #444;
   }
 }
 .show-post{
@@ -186,11 +180,12 @@
   padding-bottom: 1%;
   padding-top: 1%;
 }
+
 .new-notification{
-  background-color: rgba(0,140,186,0.1);
+  background-color: rgba($lightBlueGreen ,0.1);
 }
 .new-notification:hover{
-  background-color: rgba(0,140,186,0.25);
+  background-color: rgba($lightBlueGreen ,0.25);
 }
 .old-notification{
   background-color: rgba(128,128,128,0.1);
@@ -199,14 +194,17 @@
   background-color: rgba(128,128,128,0.25);
 }
 .notification-icon{
-  color: #808080;
+  color: $darkBlueGreen;
   padding-left: 16px;
   text-decoration: none;
   :hover{
-    color:#808080;
+    color: $darkBlueGreen;
   }
   :visited{
-    color: #808080;
+    color: $darkBlueGreen;
+  }
+  :focus{
+    color: $darkBlueGreen;
   }
 }
 .notification-icon-active{
