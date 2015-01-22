@@ -19,13 +19,13 @@
     <div class="row post_content"><%= post['content'] %></div>
     <div class="row post_vote" data-uservote="<%= post['current_user_vote'] %>" data-id="<%= post['id'] %>" data-isposter="<%= post['current_user_is_poster'] %>" data-watchstat="<%= post['watch_stat'] %>" data-ignorestat="<%= post['ignore_stat'] %>">
       <% if post['current_user_vote']=='watch' %>
-        <span class="post_watch bold"><i class="fi-eye"></i> <%= post['watch_stat'] %></span>
+        <span class="post_watch bold"><i class="fi-like"></i> <%= post['watch_stat'] %></span>
         <span class="post_ignore"><i class="fi-dislike"></i> <%= post['ignore_stat'] %></span>
       <% elsif post['current_user_vote']=='ignore' %>
-        <span class="post_watch"><i class="fi-eye"></i> <%= post['watch_stat'] %></span>
+        <span class="post_watch"><i class="fi-like"></i> <%= post['watch_stat'] %></span>
         <span class="post_ignore bold"><i class="fi-dislike"></i> <%= post['ignore_stat'] %></span>
       <% else %>
-        <span class="post_watch"><i class="fi-eye"></i> <%= post['watch_stat'] %></span>
+        <span class="post_watch"><i class="fi-like"></i> <%= post['watch_stat'] %></span>
         <span class="post_ignore"><i class="fi-dislike"></i> <%= post['ignore_stat'] %></span>
       <% end %>
     </div>

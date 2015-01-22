@@ -11,8 +11,8 @@
   New user?
   <div id="sign-up" class="home-form">
     <%= form_tag("/users", method: "post") do %>
-      <%= text_field_tag(:username, nil, placeholder: 'username') %>
-      <%= password_field_tag(:password, nil, placeholder: 'password') %>
+      <%= text_field_tag(:username, nil, placeholder: 'username (A-z,0-9,_)') %>
+      <%= password_field_tag(:password, nil, placeholder: 'password (4-16 chars)') %>
       <%= password_field_tag(:confirm_password, nil, placeholder: 'confirm password') %>
       <%= submit_tag("Sign Up", class: "button tiny") %>
     <%end%>

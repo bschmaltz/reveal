@@ -110,14 +110,14 @@ load_posts = ->
             username ="<div class=\"row post_username\"><a class=\"post_username_link\" href=\"/users/#{post.user_id}\">#{post.username}</a></div>"
           
           if post.current_user_is_poster
-            post_vote = "<div class=\"row post_vote\" #{vote_data}><span class=\"post_watch\"><i class=\"fi-eye\"></i> #{post.watch_stat}</span><span class=\"post_ignore\"><i class=\"fi-dislike\"></i> #{post.ignore_stat}</span></div>"
+            post_vote = "<div class=\"row post_vote\" #{vote_data}><span class=\"post_watch\"><i class=\"fi-like\"></i> #{post.watch_stat}</span><span class=\"post_ignore\"><i class=\"fi-dislike\"></i> #{post.ignore_stat}</span></div>"
           else
             if post.current_user_vote == 'watch'
-              post_vote = "<div class=\"row post_vote\" #{vote_data}><span class=\"post_watch bold\"><i class=\"fi-eye\"></i> #{post.watch_stat}</span><span class=\"post_ignore\"><i class=\"fi-dislike\"></i> #{post.ignore_stat}</span></div>"
+              post_vote = "<div class=\"row post_vote\" #{vote_data}><span class=\"post_watch bold\"><i class=\"fi-like\"></i> #{post.watch_stat}</span><span class=\"post_ignore\"><i class=\"fi-dislike\"></i> #{post.ignore_stat}</span></div>"
             else if post.current_user_vote == 'ignore'
-              post_vote = "<div class=\"row post_vote\" #{vote_data}><span class=\"post_watch\"><i class=\"fi-eye\"></i> #{post.watch_stat}</span><span class=\"post_ignore bold\"><i class=\"fi-dislike\"></i> #{post.ignore_stat}</span></div>"
+              post_vote = "<div class=\"row post_vote\" #{vote_data}><span class=\"post_watch\"><i class=\"fi-like\"></i> #{post.watch_stat}</span><span class=\"post_ignore bold\"><i class=\"fi-dislike\"></i> #{post.ignore_stat}</span></div>"
             else
-              post_vote = "<div class=\"row post_vote\" #{vote_data}><span class=\"post_watch\"><i class=\"fi-eye\"></i> #{post.watch_stat}</span><span class=\"post_ignore\"><i class=\"fi-dislike\"></i> #{post.ignore_stat}</span></div>"
+              post_vote = "<div class=\"row post_vote\" #{vote_data}><span class=\"post_watch\"><i class=\"fi-like\"></i> #{post.watch_stat}</span><span class=\"post_ignore\"><i class=\"fi-dislike\"></i> #{post.ignore_stat}</span></div>"
 
           if post.item_type == 'watch'
             watch_info = "<div class=\"row watch_info\">Watched by <a class=\"watch_user_link\" href=\"users/#{post.followed_user_id}\">#{post.followed_username}</a></div>"
@@ -312,7 +312,7 @@ update_items_for_watch = (post_id)->
       ignore_dif = -1
     watch_stat = watch_btn.parent().data().watchstat
     ignore_stat = watch_btn.parent().data().ignorestat
-    watch_btn.html("<i class=\"fi-eye\"></i> #{watch_stat+1}")
+    watch_btn.html("<i class=\"fi-like\"></i> #{watch_stat+1}")
     watch_btn.next().html("<i class=\"fi-dislike\"></i> #{ignore_stat+ignore_dif}")
     watch_btn.attr('class', 'post_watch bold')
     watch_btn.next().removeClass('bold')
@@ -329,7 +329,7 @@ update_items_for_ignore = (post_id)->
       watch_dif = -1
     watch_stat = ignore_btn.parent().data().watchstat
     ignore_stat = ignore_btn.parent().data().ignorestat
-    ignore_btn.prev().html("<i class=\"fi-eye\"></i> #{watch_stat+watch_dif}")
+    ignore_btn.prev().html("<i class=\"fi-like\"></i> #{watch_stat+watch_dif}")
     ignore_btn.html("<i class=\"fi-dislike\"></i> #{ignore_stat+1}")
     ignore_btn.prev().removeClass('bold')
     ignore_btn.attr('class', 'post_ignore bold')
